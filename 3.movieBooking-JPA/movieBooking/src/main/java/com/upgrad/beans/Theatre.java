@@ -3,12 +3,21 @@ package com.upgrad.beans;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Theatre {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     int theatreId;
     int cityId;
     int noOfSeats;
     int ticketPrice;
+    @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @MapKey
+    @JsonManagedReference("movies_theatre")
     List<Movie> movies;
+    @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @MapKey
+    @JsonManagedReference("bookings_theatre")
     List<Booking> bookings;
 
     public Theatre(){}

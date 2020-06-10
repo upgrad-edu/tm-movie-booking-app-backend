@@ -1,4 +1,4 @@
 package com.upgrad.DAO;
 
-public interface BookingDAO {
+public interface BookingDAO extends JpaRepository<Booking, Integer > {
 }

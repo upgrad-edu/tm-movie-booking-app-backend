@@ -1,4 +1,4 @@
 package com.upgrad.DAO;
 
-public interface MovieDAO {
+public interface MovieDAO extends JpaRepository<Movie, Integer > {
 }

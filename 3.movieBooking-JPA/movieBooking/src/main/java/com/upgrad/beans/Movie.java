@@ -13,8 +13,13 @@ public class Movie {
     String trailerURL;
     int statusId;
     int languageId;
+    @ManyToOne
+    @JsonBackReference("books_author")
+    private Theatre theatre;
 
-    public Movie(int movieId, String movieName, String movieDesc, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, int statusId , int languageId) {
+    public Movie(){}
+
+    public Movie(int movieId, String movieName, String movieDesc, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, int statusId, int languageId, Theatre theatre) {
         this.movieId = movieId;
         this.movieName = movieName;
         this.movieDesc = movieDesc;
@@ -24,6 +29,7 @@ public class Movie {
         this.trailerURL = trailerURL;
         this.statusId = statusId;
         this.languageId = languageId;
+        this.theatre = theatre;
     }
 
     public int getMovieId() {
@@ -98,37 +104,11 @@ public class Movie {
         this.languageId = languageId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
-        return movieId == movie.movieId &&
-                duration == movie.duration &&
-                statusId == movie.statusId &&
-                Objects.equals(movieName, movie.movieName) &&
-                Objects.equals(movieDesc, movie.movieDesc) &&
-                Objects.equals(releaseDate, movie.releaseDate) &&
-                Objects.equals(coverPhotoURL, movie.coverPhotoURL) &&
-                Objects.equals(trailerURL, movie.trailerURL);
+    public Theatre getTheatre() {
+        return theatre;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(movieId, movieName, movieDesc, releaseDate, duration, coverPhotoURL, trailerURL, statusId);
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "movieId=" + movieId +
-                ", movieName='" + movieName + '\'' +
-                ", movieDesc='" + movieDesc + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", duration=" + duration +
-                ", coverPhotoURL='" + coverPhotoURL + '\'' +
-                ", trailerURL='" + trailerURL + '\'' +
-                ", statusId=" + statusId +
-                '}';
+    public void setTheatre(Theatre theatre) {
+        this.theatre = theatre;
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
-    private CustomerDAO customerDAO  ;
+    private TheatreDAO theatreDAO  ;
 
     @Override
     public Customer createNewCustomer(Customer customer) {
