@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="com.upgrad.hibernate.mtb.jpa">
+
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/sandeep"/>
+            <property name="hibernate.connection.autocommit" value="false"/>
+            <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.connection.password" value="wanted007"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.connection.CharSet" value="utf8"/>
+            <property name="hibernate.connection.characterEncoding" value="utf8"/>
+            <property name="hibernate.connection.useUnicode" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!-- use encache provider-->
+            <!--<property name="hibernate.cache.region.factory_class"-->
+            <!--value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>-->
+            <!--<property name="hibernate.javax.cache.provider" value="org.ehcache.jsr107.EhcacheCachingProvider"/>-->
+            <!--&lt;!&ndash;use second level cache&ndash;&gt;-->
+            <!--<property name="hibernate.cache.use_second_level_cache" value="true"/>-->
+            <!--&lt;!&ndash;use 3rd level cache&ndash;&gt;-->
+            <!--<property name="hibernate.cache.use_query_cache" value="true"/>-->
+        </properties>
+    </persistence-unit>
+</persistence>
