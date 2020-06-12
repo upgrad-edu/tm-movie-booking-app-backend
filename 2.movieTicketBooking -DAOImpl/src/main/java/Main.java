@@ -1,19 +1,15 @@
-import com.upgrad.mtb.DAO.CustomerDAO;
-import com.upgrad.mtb.DAO.MovieDAO;
-import com.upgrad.mtb.DAO.impl.CustomerDAOImpl;
-import com.upgrad.mtb.DAO.impl.MovieDAOImpl;
+import com.upgrad.mtb.daos.CustomerDAO;
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.beans.Movie;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.Date;
 
 public class Main {
     public static void main(String[] args){
         Customer customer1 = new Customer();
-        customer1.setFirstName("Mohan");
+        customer1.setFirstName("Ram");
         customer1.setLastName("Kumar");
         customer1.setUsername("mohanKumar");
         customer1.setPassword("password");
@@ -30,11 +26,8 @@ public class Main {
         movie1.setReleaseDate(new Date("23/10/2040"));
         movie1.setTrailerURL("trailerURL");
 
-
-        CustomerDAO customerDAO = new CustomerDAOImpl();
-        customerDAO.acceptCustomerDetails(customer1);
-        MovieDAO movieDAO = new MovieDAOImpl();
-        movieDAO.acceptMovieDetails(movie1);
-
+        ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
+        CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
+        customerDAO.acceptCustomerDetails1(customer1);
     }
 }

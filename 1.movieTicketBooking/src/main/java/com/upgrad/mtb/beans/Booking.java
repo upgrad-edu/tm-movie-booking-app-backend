@@ -10,10 +10,7 @@ import javax.persistence.Id;
 import java.util.Date;
 @Getter
 @Setter
-@Entity
 public class Booking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int customerId;
     private int theatreId;

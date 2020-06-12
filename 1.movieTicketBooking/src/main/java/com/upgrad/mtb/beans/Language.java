@@ -10,10 +10,7 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@Entity
 public class Language {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String language;
 }
