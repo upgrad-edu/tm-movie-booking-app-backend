@@ -26,19 +26,10 @@ public class Main {
         customer2.setPhoneNumber("1234567890");
         customer2.setDateOfBirth(new Date("22/10/1996"));
 
-        Movie movie1 = new Movie();
-        movie1.setCoverPhotoURL("URLString");
-        movie1.setDuration(100);
-        movie1.setLanguageId(1);
-        movie1.setStatusId(1);
-        movie1.setDescription("desc of movie");
-        movie1.setName("Dhoom 213");
-        movie1.setReleaseDate(new Date("23/10/2040"));
-        movie1.setTrailerURL("trailerURL");
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
         CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-        customerDAO.acceptCustomerDetails(customer1);
+        //customerDAO.acceptCustomerDetails(customer1);
         customerDAO.acceptCustomerDetailsTransactional(customer2);
     }
 }

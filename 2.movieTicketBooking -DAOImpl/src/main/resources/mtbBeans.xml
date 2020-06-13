@@ -56,6 +56,4 @@
         <property name="jpaDialect" ref="jpaDialect" />
     </bean>
 
-
-
 </beans>

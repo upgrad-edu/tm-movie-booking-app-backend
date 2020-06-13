@@ -3,6 +3,7 @@ package com.upgrad.mtb.daos;
 import com.upgrad.mtb.beans.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         return customer;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW )
     public Customer acceptCustomerDetailsTransactional(Customer customer) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.persist(customer);

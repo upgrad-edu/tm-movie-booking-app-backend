@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CustomerService {
      public Customer acceptCustomerDetails(Customer customer);
-     public Customer getCustomerDetails(int customerId) throws CustomerDetailsNotFoundException;
-     public boolean deleteCustomer(int customerId) throws CustomerDetailsNotFoundException;
+     public Customer getCustomerDetails(int id) throws CustomerDetailsNotFoundException;
+     public boolean deleteCustomer(int id) throws CustomerDetailsNotFoundException;
      public List<Customer> getAllCustomerDetails();
 }

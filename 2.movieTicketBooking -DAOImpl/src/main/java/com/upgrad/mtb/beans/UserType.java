@@ -1,5 +1,6 @@
 package com.upgrad.mtb.beans;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,6 @@ public class UserType {
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
     @Column(unique = true)
+    @NotNull
     String userType;
 }

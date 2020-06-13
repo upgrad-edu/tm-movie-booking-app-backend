@@ -1,5 +1,6 @@
 package com.upgrad.mtb.beans;
 
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column(unique = true)
+    @NotNull
     private String status;
 
     public Status(){
