@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.Date;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args){
@@ -16,6 +17,14 @@ public class Main {
         customer1.setPassword("password");
         customer1.setPhoneNumber("1234567890");
         customer1.setDateOfBirth(new Date("22/10/1996"));
+
+        Customer customer2 = new Customer();
+        customer2.setFirstName("Shyam");
+        customer2.setLastName("Kumar");
+        customer2.setUsername("mohanKumar");
+        customer2.setPassword("password");
+        customer2.setPhoneNumber("1234567890");
+        customer2.setDateOfBirth(new Date("22/10/1996"));
 
         Movie movie1 = new Movie();
         movie1.setCoverPhotoURL("URLString");
@@ -29,8 +38,7 @@ public class Main {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
         CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-        customerDAO.acceptCustomerDetailsTransactional(customer1);
-        MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
-        movieDAO.acceptMovieDetailsTransactional(movie1);
+        customerDAO.acceptCustomerDetails(customer1);
+        customerDAO.acceptCustomerDetailsTransactional(customer2);
     }
 }
