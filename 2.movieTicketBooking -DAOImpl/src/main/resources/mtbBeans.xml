@@ -14,37 +14,24 @@
 		http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-
     <context:annotation-config/>
-    <context:component-scan base-package="com.upgrad.mtb"></context:component-scan>
-
-    <!-- Configuration for creation of Entity Manager -->
+    <context:component-scan base-package="com.upgrad.mtb"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/sandeep" />
-        <property name="username" value="root" />
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+        <!--<property name="url" value="jdbc:oracle:thin:@localhost:1521/orcl" />-->
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+        <property name="username" value="SYSTEM" />
         <property name="password" value="wanted007" />
     </bean>
 
-   <!-- <bean id="entityManagerFactory"
-          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
-          p:packagesToScan="com.upgrad.mtb.beans"
-          p:dataSource-ref="dataSource">
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="generateDdl" value="true" />
-                <property name="showSql" value="true" />
-                <property name="databasePlatform" value="org.hibernate.dialect.Oracle12cDialect"/>
-            </bean>
-        </property>
-    </bean>-->
     <bean id="jpaVendorAdapter"
           class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 
     <bean id="jpaDialect"
           class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
 
+    <!-- Configuration for creation of Entity Manager -->
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -55,11 +42,12 @@
             <props>
                 <prop key="hibernate.hbm2ddl.auto">create</prop>
                 <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</prop>
             </props>
         </property>
     </bean>
 
+    <!-- enable the configuration of transactional behavior based on annotations -->
     <tx:annotation-driven transaction-manager="transactionManager" />
     <!-- Transactions -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -69,5 +57,5 @@
     </bean>
 
 
-</beans>
 
+</beans>

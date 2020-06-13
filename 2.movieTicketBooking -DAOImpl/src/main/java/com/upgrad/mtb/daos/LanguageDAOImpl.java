@@ -1,7 +1,11 @@
-package com.upgrad.mtb.daos.impl;
+package com.upgrad.mtb.daos;
 
 import com.upgrad.mtb.daos.LanguageDAO;
 import com.upgrad.mtb.beans.Language;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,8 +13,10 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.util.List;
 
+@Repository(value="languageDAO")
 public class LanguageDAOImpl implements LanguageDAO {
-    EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.upgrad.hibernate.mtb.jpa");
+    @Autowired
+    EntityManagerFactory entityManagerFactory;
 
     public Language acceptLanguageDetails(Language language) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -21,13 +27,30 @@ public class LanguageDAOImpl implements LanguageDAO {
         return language;
     }
 
-    public Language getLanguageDetails(int languageId) {
-        return entityManagerFactory.createEntityManager().find(Language.class,languageId);
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public Language acceptLanguageDetailsTransactional(Language language) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.persist(language);
+        entityManagerFactory.close();
+        return language;
     }
 
-    public boolean deleteLanguage(int languageId) {
+    public Language getLanguageDetails(int id) {
+        return entityManagerFactory.createEntityManager().find(Language.class,id);
+    }
+
+    public boolean deleteLanguage(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Language language = entityManager.find(Language.class, languageId);
+        Language language = entityManager.find(Language.class, id);
+        entityManager.getTransaction().begin();
+        entityManager.remove(language);
+        entityManager.getTransaction().commit();
+        return true;
+    }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public boolean deleteLanguageTransactional(int id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Language language = entityManager.find(Language.class, id);
         entityManager.getTransaction().begin();
         entityManager.remove(language);
         entityManager.getTransaction().commit();

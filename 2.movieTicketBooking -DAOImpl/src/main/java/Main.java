@@ -1,6 +1,7 @@
 import com.upgrad.mtb.daos.CustomerDAO;
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.beans.Movie;
+import com.upgrad.mtb.daos.MovieDAO;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -28,6 +29,8 @@ public class Main {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
         CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-        customerDAO.acceptCustomerDetails1(customer1);
+        customerDAO.acceptCustomerDetailsTransactional(customer1);
+        MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
+        movieDAO.acceptMovieDetailsTransactional(movie1);
     }
 }

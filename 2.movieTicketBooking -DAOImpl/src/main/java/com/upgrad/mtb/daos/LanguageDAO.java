@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface LanguageDAO {
     public Language acceptLanguageDetails(Language language);
-    public Language getLanguageDetails(int languageId);
-    public boolean deleteLanguage(int languageId);
+    public Language acceptLanguageDetailsTransactional(Language language);
+    public Language getLanguageDetails(int id);
+    public boolean deleteLanguage(int id);
+    public boolean deleteLanguageTransactional(int id);
     public List<Language> getAllLanguageDetails();
 }

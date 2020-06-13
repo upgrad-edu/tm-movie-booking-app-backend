@@ -18,7 +18,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
-    public Customer acceptCustomerDetails1(Customer customer) {
+    public Customer acceptCustomerDetails(Customer customer) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(customer);
@@ -28,24 +28,32 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Customer acceptCustomerDetails2(Customer customer) {
+    public Customer acceptCustomerDetailsTransactional(Customer customer) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.persist(customer);
         entityManager.close();
         return customer;
     }
 
-
-    public Customer getCustomerDetails(int customerId) {
-        return entityManagerFactory.createEntityManager().find(Customer.class,customerId);
+    public Customer getCustomerDetails(int id) {
+        return entityManagerFactory.createEntityManager().find(Customer.class,id);
     }
 
-    public boolean deleteCustomer(int customerId) {
+    public boolean deleteCustomer(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Customer customer = entityManager.find(Customer.class, customerId);
+        Customer customer = entityManager.find(Customer.class, id);
         entityManager.getTransaction().begin();
         entityManager.remove(customer);
         entityManager.getTransaction().commit();
+        return true;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public boolean deleteCustomerTransactional(int id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        Customer customer = entityManager.find(Customer.class, id);
+        entityManager.remove(customer);
+        entityManager.close();
         return true;
     }
 

@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface BookingDAO {
     public Booking acceptBookingDetails(Booking booking);
-    public Booking getBookingDetails(int bookingId);
-    public boolean deleteBooking(int bookingId);
+    public Booking acceptBookingDetailsTransactional(Booking booking);
+    public Booking getBookingDetails(int id);
+    public boolean deleteBooking(int id);
+    public boolean deleteBookingTransactional(int id);
     public List<Booking> getAllBookingDetails();
 }

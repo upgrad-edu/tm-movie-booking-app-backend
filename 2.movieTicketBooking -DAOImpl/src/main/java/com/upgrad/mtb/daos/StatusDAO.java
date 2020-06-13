@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface StatusDAO {
     public Status acceptStatusDetails(Status status);
-    public Status getStatusDetails(int statusId);
-    public boolean deleteStatus(int statusId);
+    public Status acceptStatusDetailsTransactional(Status status);
+    public Status getStatusDetails(int id);
+    public boolean deleteStatus(int id);
+    public boolean deleteStatusTransactional(int id);
     public List<Status> getAllStatusDetails();
 }
