@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service(value = "bookingService")
-@ComponentScan("com.upgrad.mtb.daos")
 public class BookingServiceImpl implements BookingService  {
     @Autowired
     private BookingDAO bookingDAO  ;
