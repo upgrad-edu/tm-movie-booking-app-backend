@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Objects;
+
 @Getter
 @Setter
 @Entity
@@ -28,4 +30,26 @@ public class Booking {
 
     public Booking(){}
 
+    public Booking(Date bookingDate, int noOfSeats, Theatre theatre, Customer customer) {
+        this.bookingDate = bookingDate;
+        this.noOfSeats = noOfSeats;
+        this.theatre = theatre;
+        this.customer = customer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return noOfSeats == booking.noOfSeats &&
+                bookingDate.equals(booking.bookingDate) &&
+                theatre.equals(booking.theatre) &&
+                customer.equals(booking.customer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookingDate, noOfSeats, theatre, customer);
+    }
 }

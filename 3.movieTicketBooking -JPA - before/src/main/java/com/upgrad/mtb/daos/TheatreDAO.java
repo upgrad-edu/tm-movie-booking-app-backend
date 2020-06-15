@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("theatreDAO")
 public interface TheatreDAO extends JpaRepository<Theatre, Integer> {
+    Theatre findFirstByTheatreName(String theatreName);
 }

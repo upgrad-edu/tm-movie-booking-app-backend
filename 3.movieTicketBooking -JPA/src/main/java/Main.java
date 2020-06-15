@@ -1,5 +1,6 @@
 import com.upgrad.mtb.beans.*;
 import com.upgrad.mtb.daos.*;
+import org.hibernate.engine.jdbc.spi.SchemaNameResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -7,6 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -59,8 +61,5 @@ public class Main {
         MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
         customerDAO.save(customer1);
         movieDAO.save(movie);
-
-
-
     }
 }

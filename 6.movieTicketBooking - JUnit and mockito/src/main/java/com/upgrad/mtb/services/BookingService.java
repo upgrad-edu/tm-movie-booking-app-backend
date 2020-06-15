@@ -10,5 +10,4 @@ public interface BookingService {
      public Booking getBookingDetails(int id) throws BookingDetailsNotFoundException;
      public boolean deleteBooking(int id) throws BookingDetailsNotFoundException;
      public List<Booking> getAllBookingDetails();
-     public int addTotalSeats(int a, int b);
 }

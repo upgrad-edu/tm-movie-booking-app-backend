@@ -17,8 +17,20 @@ public class City {
     @Column(unique = true, nullable = false)
     private String city;
 
-    @OneToMany(mappedBy = "city" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
     @JsonManagedReference("theatre_city")
-    List<Theatre> theatres;
+   List<Theatre> theatres;
+
+    public City() {
+    }
+
+    public City(String city, List<Theatre> theatres) {
+        this.city = city;
+        this.theatres = theatres;
+    }
+
+    public City(String city) {
+        this.city = city;
+    }
 }

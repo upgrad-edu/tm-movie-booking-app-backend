@@ -23,6 +23,7 @@ public class BookingServiceImpl implements BookingService  {
                 ()->  new BookingDetailsNotFoundException("Details not found for id : " + id));
     }
 
+
     public boolean deleteBooking(int id) throws BookingDetailsNotFoundException {
         Booking booking = getBookingDetails(id);
         bookingDAO.delete(booking);
@@ -31,9 +32,5 @@ public class BookingServiceImpl implements BookingService  {
 
     public List<Booking> getAllBookingDetails() {
         return bookingDAO.findAll();
-    }
-
-    public int addTotalSeats(int a, int b){
-        return a+b;
     }
 }

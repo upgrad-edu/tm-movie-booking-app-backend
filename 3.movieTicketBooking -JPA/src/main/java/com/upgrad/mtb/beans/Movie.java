@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -67,5 +68,26 @@ public class Movie {
         this.trailerURL = trailerURL;
         this.language = language;
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return duration == movie.duration &&
+                name.equals(movie.name) &&
+                description.equals(movie.description) &&
+                releaseDate.equals(movie.releaseDate) &&
+                coverPhotoURL.equals(movie.coverPhotoURL) &&
+                trailerURL.equals(movie.trailerURL) &&
+                language.equals(movie.language) &&
+                status.equals(movie.status) &&
+                theatres.equals(movie.theatres);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description, releaseDate, duration, coverPhotoURL, trailerURL, language, status, theatres);
     }
 }

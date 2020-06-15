@@ -1,23 +1,18 @@
-import com.upgrad.mtb.beans.Booking;
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.beans.UserType;
 import com.upgrad.mtb.daos.CustomerDAO;
-import com.upgrad.mtb.services.CustomerService;
+import com.upgrad.mtb.exceptions.CustomerDetailsNotFoundException;
 import com.upgrad.mtb.services.CustomerServiceImpl;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import static org.mockito.Mockito.when;
@@ -42,43 +37,52 @@ public class CustomerServiceTest {
         customer.setFirstName("Ram");
         customer.setLastName("Kumar");
         customer.setId(1);
-        customer.setPhoneNumber("9009345678");
+        customer.setPhoneNumbers(new ArrayList<>(Arrays.asList("9009345678")));
         customer.setDateOfBirth(new Date("01/06/1992"));
     }
 
     @Before
     public void setUpTestMock(){
-        when(customerDAO.save(customer)).thenReturn(
-                new Customer(1,"Ram","Kumar","ramKumar","password",
-                        new Date("01/06/1992"), "9009345678", new ArrayList<>(),
-                        new UserType(1, "Admin")));
-    }
-
-    @Test
-    public void createNewCustomer() throws ParseException {
-        Assert.assertEquals(customer.getUsername(),customerService.acceptCustomerDetails(customer).getUsername());
-    }
-
-   /* @Test
-    void getCustomer() throws CustomerNotFoundException {
+        when(customerDAO.save(customer)).thenReturn(customer);
         when(customerDAO.findById(1)).thenReturn(java.util.Optional.ofNullable(customer));
-        assertEquals(customer.getUsername(),customerService.getCustomer(1));
+
+        Customer customer1 = new Customer("Mohan", "Kumar," ,"mohanKumar" ,"password" , new Date("22/10/1996") , new ArrayList<String>() , new ArrayList<>() , new UserType("Admin") );
+
+        when(customerDAO.findAll()).thenReturn(new ArrayList<>(Arrays.asList(customer,customer1)));
     }
 
     @Test
-    void deleteCustomer() throws CustomerNotFoundException {
+    public void testAcceptCustomerDetails() throws ParseException {
+        Assert.assertEquals(customer,customerService.acceptCustomerDetails(customer));
     }
 
     @Test
-    void getAllCustomer() {
-        ArrayList<Customer> customerArrayList = new ArrayList<>();
-        customerArrayList.add(customer);
-        when(customerDAO.findAll()).thenReturn(customerArrayList);
-        assertEquals(customerArrayList,customerService.getAllCustomer());
+    public void testGetCustomerDetailsWithCorrectCustomerId() throws CustomerDetailsNotFoundException {
+        Assert.assertEquals(customer , customerService.getCustomerDetails(1));
+    }
+
+    @Test(expected = CustomerDetailsNotFoundException.class)
+    public void testGetCustomerDetailsWithInCorrectCustomerId() throws CustomerDetailsNotFoundException {
+        try {
+            customerService.getCustomerDetails(2);
+        }catch (NullPointerException ne){
+            throw new CustomerDetailsNotFoundException("Details not found");
+        }
+    }
+
+    @Test
+    public void testGetAllCustomerDetails(){
+        Assert.assertEquals(2, customerService.getAllCustomerDetails().size());
+        Assert.assertEquals(customer, customerService.getAllCustomerDetails().get(0));
+    }
+
+    @After
+    public void tearDownTestMockData(){
+
     }
 
     @AfterClass
-    void tearDown() {
+    public static void tearDown() {
         customer = null;
-    }*/
+    }
 }

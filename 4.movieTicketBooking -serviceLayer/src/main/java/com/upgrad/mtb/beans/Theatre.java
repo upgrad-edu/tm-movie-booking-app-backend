@@ -2,12 +2,14 @@ package com.upgrad.mtb.beans;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Theatre {
     @Id
@@ -20,7 +22,6 @@ public class Theatre {
     @Column( nullable = false)
     private int ticketPrice;
 
-    @Column( nullable = false)
     @ManyToOne
     @JsonBackReference("theatre_city")
     private City city;
@@ -34,8 +35,16 @@ public class Theatre {
     @JsonBackReference("movie_theatre")
     private Movie movie;
 
+
+
     public Theatre(){}
 
-
-
+    public Theatre(String theatreName, int noOfSeats, int ticketPrice, City city, List<Booking> bookings, Movie movie) {
+        this.theatreName = theatreName;
+        this.noOfSeats = noOfSeats;
+        this.ticketPrice = ticketPrice;
+        this.city = city;
+        this.bookings = bookings;
+        this.movie = movie;
+    }
 }
