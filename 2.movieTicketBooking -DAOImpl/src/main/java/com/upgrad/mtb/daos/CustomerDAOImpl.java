@@ -28,7 +28,7 @@ public class CustomerDAOImpl implements CustomerDAO {
         return customer;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW )
+
     public Customer acceptCustomerDetailsTransactional(Customer customer) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.persist(customer);

@@ -15,8 +15,7 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(unique = true)
-    @NotNull
+    @Column(unique = true, nullable = false)
     private String status;
 
     @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
@@ -25,6 +24,14 @@ public class Status {
     List<Movie> movies;
 
     public Status(){
+    }
 
+    public Status(int id, String status){
+        this.id = id;
+        this.status = status;
+    }
+
+    public Status(String status){
+        this.status = status;
     }
 }

@@ -18,17 +18,17 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
+    @Column( nullable = false)
     private String name;
-    @NotNull
+    @Column( nullable = false)
     private String description;
-    @NotNull
+    @Column( nullable = false)
     private Date releaseDate;
-    @NotNull
+    @Column( nullable = false)
     private int duration;
-    @NotNull
+    @Column( nullable = false)
     private String coverPhotoURL;
-    @NotNull
+    @Column( nullable = false)
     private String trailerURL;
 
     @ManyToOne
@@ -44,8 +44,28 @@ public class Movie {
     @JsonManagedReference("movie_theatre")
     List<Theatre> theatres;
 
-
-
     public Movie(){}
 
+    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, Language language, Status status, List<Theatre> theatres) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.coverPhotoURL = coverPhotoURL;
+        this.trailerURL = trailerURL;
+        this.language = language;
+        this.status = status;
+        this.theatres = theatres;
+    }
+
+    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, Language language, Status status) {
+        this.name = name;
+        this.description = description;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.coverPhotoURL = coverPhotoURL;
+        this.trailerURL = trailerURL;
+        this.language = language;
+        this.status = status;
+    }
 }

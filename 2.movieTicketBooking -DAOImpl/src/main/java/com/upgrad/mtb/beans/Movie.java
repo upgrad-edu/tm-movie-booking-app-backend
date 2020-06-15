@@ -1,6 +1,5 @@
 package com.upgrad.mtb.beans;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,24 +13,23 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
-    @Column(unique = true)
+    @Column(nullable = false , unique = true)
     private String name;
-    @NotNull
+    @Column(nullable = false)
     private String description;
-    @NotNull
+    @Column(nullable = false)
     private Date releaseDate;
-    @NotNull
+    @Column(nullable = false)
     private int duration;
-    @NotNull
+    @Column(nullable = false)
     private String coverPhotoURL;
-    @NotNull
+    @Column(nullable = false)
     private String trailerURL;
-    @NotNull
+    @Column(nullable = false)
     private int statusId;
-    @NotNull
+    @Column(nullable = false)
     private int languageId;
-    @NotNull
+    @Column(nullable = false)
     private int theatreId;
 
     public Movie(){}

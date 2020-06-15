@@ -1,11 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter
@@ -15,20 +13,17 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
+    @Column(nullable = false)
     private String firstName;
     private String lastName;
-    @Column(unique = true)
-    @NotNull
+    @Column(unique = true , nullable = false)
     private String username;
-    @Size(min = 5, max = 32)
-    @NotNull
+    @Column(nullable = false)
     private String password;
-    @NotNull
+    @Column(nullable = false)
     private Date dateOfBirth;
     private int userTypeId;
-    @Size(min = 10 , max = 10)
-    @NotNull
+    @Column(nullable = false)
     private String phoneNumber;
 
     public Customer() {

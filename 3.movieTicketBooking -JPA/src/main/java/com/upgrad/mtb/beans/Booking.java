@@ -1,11 +1,11 @@
 package com.upgrad.mtb.beans;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 @Getter
 @Setter
@@ -14,9 +14,9 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
+    @Column( nullable = false)
     private Date bookingDate;
-    @NotNull
+    @Column( nullable = false)
     private int noOfSeats;
     @ManyToOne
     @JsonBackReference("booking_theatre")

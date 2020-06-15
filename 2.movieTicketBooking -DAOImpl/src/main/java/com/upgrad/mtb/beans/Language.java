@@ -1,6 +1,5 @@
 package com.upgrad.mtb.beans;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,6 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(unique = true)
-    @NotNull
+    @Column(unique = true , nullable = false)
     private String language;
 }

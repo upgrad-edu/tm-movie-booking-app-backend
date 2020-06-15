@@ -14,9 +14,9 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
+    @Column( nullable = false)
     private Date bookingDate;
-    @NotNull
+    @Column( nullable = false)
     private int noOfSeats;
     @ManyToOne
     @JsonBackReference("booking_theatre")

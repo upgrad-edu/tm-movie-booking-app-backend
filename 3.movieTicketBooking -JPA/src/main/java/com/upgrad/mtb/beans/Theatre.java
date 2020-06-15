@@ -2,9 +2,9 @@ package com.upgrad.mtb.beans;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
@@ -13,15 +13,17 @@ public class Theatre {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
-    @Column(unique = true)
+    @Column( nullable = false, unique = true)
     private String theatreName;
-    @NotNull
-    private int cityId;
-    @NotNull
+    @Column( nullable = false)
     private int noOfSeats;
-    @NotNull
+    @Column( nullable = false)
     private int ticketPrice;
+
+    @Column( nullable = false)
+    @ManyToOne
+    @JsonBackReference("theatre_city")
+    private City city;
 
     @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
@@ -33,5 +35,7 @@ public class Theatre {
     private Movie movie;
 
     public Theatre(){}
+
+
 
 }

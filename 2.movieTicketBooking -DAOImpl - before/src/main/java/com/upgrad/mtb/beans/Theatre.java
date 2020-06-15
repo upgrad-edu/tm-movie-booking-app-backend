@@ -1,22 +1,19 @@
 package com.upgrad.mtb.beans;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 public class Theatre {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @NotNull
+    @Column(nullable = false)
     private String theatreName;
-    @NotNull
+    @Column(nullable = false)
     private int cityId;
-    @NotNull
+    @Column(nullable = false)
     private int noOfSeats;
-    @NotNull
+    @Column(nullable = false)
     private int ticketPrice;
 
     public Theatre(){}
