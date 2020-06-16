@@ -8,6 +8,7 @@ import java.util.List;
 public interface MovieService {
     public Movie acceptMovieDetails(Movie movie);
     public Movie getMovieDetails(int id)   throws MovieDetailsNotFoundException;
+    public Movie getMovieDetailsByMovieName(String movieName)   throws MovieDetailsNotFoundException;
     public boolean deleteMovie(int id)  throws MovieDetailsNotFoundException ;
     public List<Movie> getAllMoviesDetails();
 }

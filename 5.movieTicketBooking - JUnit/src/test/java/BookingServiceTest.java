@@ -59,9 +59,9 @@ public class BookingServiceTest {
         theatre.setNoOfSeats(100);
         theatre.setTicketPrice(100);
 
+        cityId = cityService.acceptCityDetails(city).getId();
         customerId = customerService.acceptCustomerDetails(customer).getId();
         theatreId = theatreService.acceptTheatreDetails(theatre).getId();
-        cityId = cityService.acceptCityDetails(city).getId();
 
         booking.setCustomer(customer);
         booking.setTheatre(theatre);
@@ -78,6 +78,13 @@ public class BookingServiceTest {
         Booking savedBooking = bookingService.acceptBookingDetails(booking);
         int savedBookingId = savedBooking.getId();
         Booking testSavedBooking = bookingService.getBookingDetails(savedBookingId);
+        Assert.assertEquals(savedBooking , testSavedBooking);
+    }
+
+    @Test(expected = BookingDetailsNotFoundException.class)
+    public void testGetBookingDetailsWithInCorrectData() throws BookingDetailsNotFoundException {
+        Booking savedBooking = bookingService.acceptBookingDetails(booking);
+        Booking testSavedBooking = bookingService.getBookingDetails(45);
         Assert.assertEquals(savedBooking , testSavedBooking);
     }
 

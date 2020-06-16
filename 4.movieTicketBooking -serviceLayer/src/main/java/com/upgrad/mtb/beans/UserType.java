@@ -32,4 +32,5 @@ public class UserType {
     public UserType(String userType){
         this.userType = userType;
     }
+
 }

@@ -23,6 +23,10 @@ public class Main {
         //adding language data
         Language english = new Language("English");
         Language hindi = new Language("Hindi");
+        //adding City data
+        City mumbaiCity = new City("Mumbai");
+        City patnaCity = new City("patna");
+        City kolkataCity = new City("Kolkata");
 
 
 
@@ -30,6 +34,8 @@ public class Main {
         StatusDAO statusDAO = (StatusDAO) context.getBean("statusDAO");
         UserTypeDAO userTypeDAO = (UserTypeDAO) context.getBean("userTypeDAO");
         LanguageDAO languageDAO = (LanguageDAO) context.getBean("languageDAO");
+        CityDAO cityDAO = (CityDAO) context.getBean("cityDAO");
+        TheatreDAO theatreDAO = (TheatreDAO) context.getBean("theatreDAO");
 
         statusDAO.save(upcomingStatus);
         statusDAO.save(releasedStatus);
@@ -40,6 +46,10 @@ public class Main {
 
         languageDAO.save(english);
         languageDAO.save(hindi);
+
+        cityDAO.save(mumbaiCity);
+        cityDAO.save(patnaCity);
+        cityDAO.save(kolkataCity);
 
         Customer customer1 = new Customer();
         customer1.setFirstName("Ram");
@@ -61,5 +71,8 @@ public class Main {
         MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
         customerDAO.save(customer1);
         movieDAO.save(movie);
+
+        Theatre theatre = new Theatre("Epic Theatres", 100 , 150, cityDAO.findDistinctByCity("Mumbai"), new ArrayList<>(), movieDAO.findByName("Dhoom 213"));
+        theatreDAO.save(theatre);
     }
 }

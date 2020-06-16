@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service("userTypeService")
 public class UserTypeServiceImpl implements UserTypeService {
     @Autowired
@@ -21,9 +20,17 @@ public class UserTypeServiceImpl implements UserTypeService {
 
     @Override
     public UserType getUserTypeDetails(int id) throws UserTypeDetailsNotFoundException {
-        UserType userType = userTypeDAO.findById(id).orElseThrow(
+        return userTypeDAO.findById(id).orElseThrow(
                 ()->  new UserTypeDetailsNotFoundException("movie not found for " + id));
-        return userType;
+    }
+
+    @Override
+    public UserType getUserTypeDetailsFromUserType(String userType) throws UserTypeDetailsNotFoundException {
+        UserType userType1 = userTypeDAO.findDistinctByUserType(userType);
+        if(userType1 == null)
+            throw new UserTypeDetailsNotFoundException("Details not found for :" + userType);
+        else
+            return userType1;
     }
 
     @Override

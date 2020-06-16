@@ -8,6 +8,7 @@ import java.util.List;
 public interface CityService {
     public City acceptCityDetails(City city);
     public City getCityDetails(int id) throws CityDetailsNotFoundException;
+    public City getCityDetailsByCityName(String cityName) throws CityDetailsNotFoundException;
     public boolean deleteCity(int id) throws CityDetailsNotFoundException;
     public List<City> getAllCityDetails();
 }
