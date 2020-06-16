@@ -8,6 +8,7 @@ import java.util.List;
 public interface CustomerService {
      public Customer acceptCustomerDetails(Customer customer);
      public Customer getCustomerDetails(int id) throws CustomerDetailsNotFoundException;
+     public Customer getCustomerDetailsByUsername(String username) throws CustomerDetailsNotFoundException;
      public boolean deleteCustomer(int id) throws CustomerDetailsNotFoundException;
      public List<Customer> getAllCustomerDetails();
 }

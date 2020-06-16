@@ -1,8 +1,10 @@
 package com.upgrad.mtb.services;
 
 import com.upgrad.mtb.beans.Customer;
+import com.upgrad.mtb.beans.Language;
 import com.upgrad.mtb.daos.CustomerDAO;
 import com.upgrad.mtb.exceptions.CustomerDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,15 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerDAO.findById(id).orElseThrow(
                 ()->  new CustomerDetailsNotFoundException("Customer not found for id" + id));
         return customer;
+    }
+
+    @Override
+    public Customer getCustomerDetailsByUsername(String username) throws CustomerDetailsNotFoundException {
+        Customer myCustomer = customerDAO.findByUsername(username);
+        if(myCustomer == null)
+            throw new CustomerDetailsNotFoundException("Details not found for : " + username);
+        else
+            return myCustomer;
     }
 
     @Override
