@@ -9,34 +9,35 @@ import java.util.List;
 
 @Getter
 @Setter
-
+@Entity
 public class Customer {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
+    @Column(nullable = false)
     private String firstName;
     private String lastName;
-
+    @Column(unique = true , nullable = false)
     private String username;
-
+    @Column(nullable = false)
     private String password;
-
+    @Column(nullable = false)
     private Date dateOfBirth;
     private int userTypeId;
-
-    private List<String> phoneNumbers;
+    @Column(nullable = false)
+    @ElementCollection
+    private List<String> phoneNumber;
 
     public Customer() {
     }
 
-    public Customer(int id, String firstName, String lastName, String username, String password, Date dateOfBirth, int userTypeId, List<String> phoneNumbers) {
-        this.id = id;
+    public Customer(String firstName, String lastName, String username, String password, Date dateOfBirth, int userTypeId, List<String> phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.dateOfBirth = dateOfBirth;
         this.userTypeId = userTypeId;
-        this.phoneNumbers = phoneNumbers;
+        this.phoneNumber = phoneNumber;
     }
 }

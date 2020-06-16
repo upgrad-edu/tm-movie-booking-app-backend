@@ -7,12 +7,11 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
+
 public class Status {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int id;
-    @Column(unique = true , nullable = false)
+
     private String status;
 
     public Status(){

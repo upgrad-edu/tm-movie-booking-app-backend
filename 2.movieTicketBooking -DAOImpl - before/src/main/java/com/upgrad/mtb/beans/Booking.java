@@ -8,20 +8,24 @@ import java.util.Date;
 
 @Getter
 @Setter
-@Entity
-public class Booking {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Column(nullable = false)
-    private int customerId;
-    @Column(nullable = false)
-    private int theatreId;
-    @Column(nullable = false)
-    private Date bookingDate;
-    @Column(nullable = false)
-    private int noOfSeats;
 
+public class Booking {
+
+    private int id;
+
+    private int customerId;
+
+    private int theatreId;
+
+    private Date bookingDate;
+    private int noOfSeats;
     public Booking(){}
 
+    public Booking(int id, int customerId, int theatreId, Date bookingDate, int noOfSeats) {
+        this.id = id;
+        this.customerId = customerId;
+        this.theatreId = theatreId;
+        this.bookingDate = bookingDate;
+        this.noOfSeats = noOfSeats;
+    }
 }
