@@ -1,15 +1,9 @@
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.beans.Movie;
-
-import java.util.Date;
-
 import com.upgrad.mtb.beans.Theatre;
 import com.upgrad.mtb.beans.UserType;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 public class Main {
     public static void main(String[] args){
