@@ -17,7 +17,7 @@ public class City {
     @Column(unique = true, nullable = false)
     private String city;
 
-    @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
     @JsonManagedReference("theatre_city")
    List<Theatre> theatres;
