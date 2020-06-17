@@ -1,16 +1,12 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -33,16 +29,12 @@ public class Movie {
     private String trailerURL;
 
     @ManyToOne
-    @JsonBackReference("movie_language")
     private Language language;
 
     @ManyToOne
-    @JsonBackReference("movie_status")
     private Status status;
 
     @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("movie_theatre")
     List<Theatre> theatres;
 
     public Movie(){}

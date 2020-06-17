@@ -1,11 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -19,8 +17,6 @@ public class Language {
     private String language;
 
     @OneToMany(mappedBy = "language" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("movie_language")
     List<Movie> movies;
 
     public Language() {

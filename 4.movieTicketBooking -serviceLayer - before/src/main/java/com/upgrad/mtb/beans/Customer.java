@@ -1,13 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -33,17 +29,14 @@ public class Customer {
     private List<String> phoneNumbers;
 
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("booking_customer")
     List<Booking> bookings;
     @ManyToOne
-    @JsonBackReference("booking_customer")
     UserType userType;
 
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String username, @Size(min = 5, max = 32) String password, Date dateOfBirth, @Size(min = 10, max = 10) List<String> phoneNumbers, List<Booking> bookings, UserType userType) {
+    public Customer(String firstName, String lastName, String username , Date dateOfBirth,  List<String> phoneNumbers, List<Booking> bookings, UserType userType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

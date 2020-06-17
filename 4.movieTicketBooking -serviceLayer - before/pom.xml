@@ -71,24 +71,13 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>2.1.10.RELEASE</version>
         </dependency>
-
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>C:/oraclexe/app/oracle/product/11.2.0/server/jdbc/lib/ojdbc6.jar</systemPath>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.11.0</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
+            <!--<systemPath>src/lib/ojdbc6.jar</systemPath>-->
         </dependency>
     </dependencies>
 

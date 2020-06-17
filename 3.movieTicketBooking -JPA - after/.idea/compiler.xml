@@ -8,9 +8,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="MovieTicketBooking" />
-        <module name="2.movieTicketBooking -DAOImpl" />
         <module name="3.movieTicketBooking -JPA" />
-        <module name="3.movieTicketBooking -JPA - before" />
+        <module name="2.movieTicketBooking -DAOImpl" />
+        <module name="3.movieTicketBooking -JPA - after" />
       </profile>
     </annotationProcessing>
   </component>

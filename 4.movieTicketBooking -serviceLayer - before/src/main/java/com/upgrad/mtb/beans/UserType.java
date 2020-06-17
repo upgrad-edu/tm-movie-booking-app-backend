@@ -1,10 +1,9 @@
 package com.upgrad.mtb.beans;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -17,8 +16,6 @@ public class UserType {
     @Column(unique = true , nullable = false)
     String userType;
     @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("booking_customer")
     List<Customer> customer;
 
     public UserType() {

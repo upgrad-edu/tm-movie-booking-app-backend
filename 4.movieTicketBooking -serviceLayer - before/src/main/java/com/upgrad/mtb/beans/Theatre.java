@@ -1,7 +1,5 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,16 +21,12 @@ public class Theatre {
     private int ticketPrice;
 
     @ManyToOne
-    @JsonBackReference("theatre_city")
     private City city;
 
     @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("booking_theatre")
     List<Booking> bookings;
 
     @ManyToOne
-    @JsonBackReference("movie_theatre")
     private Movie movie;
 
 
