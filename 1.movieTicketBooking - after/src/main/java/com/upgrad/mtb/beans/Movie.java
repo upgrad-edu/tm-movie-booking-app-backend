@@ -26,4 +26,17 @@ public class Movie {
         this.coverPhotoURL = coverPhotoURL;
         this.trailerURL = trailerURL;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration=" + duration +
+                ", coverPhotoURL='" + coverPhotoURL + '\'' +
+                ", trailerURL='" + trailerURL + '\'' +
+                '}';
+    }
 }

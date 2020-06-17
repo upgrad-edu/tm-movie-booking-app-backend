@@ -22,5 +22,16 @@ public class Booking {
         this.bookingDate = bookingDate;
         this.noOfSeats = noOfSeats;
     }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", customerId=" + customerId +
+                ", theatreId=" + theatreId +
+                ", bookingDate=" + bookingDate +
+                ", noOfSeats=" + noOfSeats +
+                '}';
+    }
 }
 //comment

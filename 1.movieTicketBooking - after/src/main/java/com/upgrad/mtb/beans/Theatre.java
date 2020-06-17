@@ -19,4 +19,14 @@ public class Theatre {
         this.noOfSeats = noOfSeats;
         this.ticketPrice = ticketPrice;
     }
+
+    @Override
+    public String toString() {
+        return "Theatre{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", noOfSeats=" + noOfSeats +
+                ", ticketPrice=" + ticketPrice +
+                '}';
+    }
 }
