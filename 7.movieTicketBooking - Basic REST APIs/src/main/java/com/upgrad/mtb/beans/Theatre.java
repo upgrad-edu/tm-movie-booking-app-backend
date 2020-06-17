@@ -26,7 +26,7 @@ public class Theatre {
     @JsonBackReference("theatre_city")
     private City city;
 
-    @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "theatre" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @MapKey
     @JsonManagedReference("booking_theatre")
     List<Booking> bookings;

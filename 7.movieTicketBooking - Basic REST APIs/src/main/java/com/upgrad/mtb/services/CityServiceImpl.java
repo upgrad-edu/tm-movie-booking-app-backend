@@ -8,11 +8,13 @@ import com.upgrad.mtb.exceptions.BookingDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.CityDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service("cityService")
 public class CityServiceImpl implements CityService {
+    @Qualifier("cityDAO")
     @Autowired
     CityDAO cityDAO;
 
