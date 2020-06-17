@@ -6,8 +6,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Main {
     public static void main(String[] args){
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
-        Movie movie = (Movie) context.getBean("movie");
-        System.out.println(movie);
+        /*Movie movie = (Movie) context.getBean("movie");
+        System.out.println(movie);*/
 
         Theatre theatre =(Theatre) context.getBean("theatre");
         System.out.println(theatre);
