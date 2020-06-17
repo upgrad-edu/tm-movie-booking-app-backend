@@ -29,4 +29,18 @@ public class Customer {
         this.userTypeId = userTypeId;
         this.phoneNumber = phoneNumber;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", userTypeId=" + userTypeId +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }
