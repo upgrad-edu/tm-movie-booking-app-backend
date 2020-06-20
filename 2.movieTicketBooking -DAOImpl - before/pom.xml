@@ -45,6 +45,13 @@
             <artifactId>spring-tx</artifactId>
             <version>5.0.8.RELEASE</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>2.5</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
         <dependency>
             <groupId>org.hibernate</groupId>

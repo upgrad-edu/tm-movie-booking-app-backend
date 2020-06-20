@@ -7,10 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.*;
 import java.util.List;
 
 @Repository(value="movieDAO")
@@ -61,4 +58,13 @@ public class MovieDAOImpl implements MovieDAO {
         Query query = entityManagerFactory.createEntityManager().createQuery("from Movie m",Movie.class);
         return (List<Movie>)query.getResultList();
     }
+
+    public Movie getMovieDetailsByName(String name) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Movie> query = (TypedQuery<Movie>) entityManager.createNamedQuery("movieDetailsByName");
+        query.setParameter("name",name);
+       return query.getSingleResult();
+    }
+
+
 }

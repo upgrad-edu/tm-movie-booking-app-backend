@@ -1,3 +1,5 @@
+
+
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.beans.Movie;
 import com.upgrad.mtb.beans.Theatre;
@@ -19,14 +21,15 @@ public class Main {
 
         //insert movie and theatre data
         Movie savedMovie = movieDAO.acceptMovieDetails(movie);
-        Theatre savedTheatre = theatreDAO.acceptTheatreDetails(theatre);
+        Theatre savedTheatre = theatreDAO.acceptTheatreDetailsTransactional(theatre);
 
-        //delete movie and theatre data
+        /*//delete movie and theatre data
         movieDAO.deleteMovie(savedMovie.getId());
         theatreDAO.deleteTheatre(savedTheatre.getId());
 
         //get list of all movies and theatres
         movieDAO.getAllMovieDetails();
-        theatreDAO.getAllTheatreDetails();
+        theatreDAO.getAllTheatreDetails();*/
+        System.out.println(movieDAO.getMovieDetailsByName("Dhoom"));
     }
 }

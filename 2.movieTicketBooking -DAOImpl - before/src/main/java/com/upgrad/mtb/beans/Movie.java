@@ -9,6 +9,12 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
+@Table
+@NamedQueries(
+        {   @NamedQuery(name = "movieDetailsByName" , query ="From Movie m where m.name = :name"),
+            @NamedQuery(name = "allMovieDetailsByduration" , query ="From Movie m where m.duration = :duration")
+        }
+)
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,5 +41,18 @@ public class Movie {
         this.duration = duration;
         this.coverPhotoURL = coverPhotoURL;
         this.trailerURL = trailerURL;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration=" + duration +
+                ", coverPhotoURL='" + coverPhotoURL + '\'' +
+                ", trailerURL='" + trailerURL + '\'' +
+                '}';
     }
 }

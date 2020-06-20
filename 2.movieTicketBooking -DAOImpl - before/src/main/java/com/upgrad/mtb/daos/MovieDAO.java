@@ -11,4 +11,5 @@ public interface MovieDAO {
     public boolean deleteMovie(int id);
     public boolean deleteMovieTransactional(int id);
     public List<Movie> getAllMovieDetails();
+    public Movie getMovieDetailsByName(String name);
 }

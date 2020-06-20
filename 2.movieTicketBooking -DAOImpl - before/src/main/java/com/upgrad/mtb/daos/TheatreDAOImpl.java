@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository(value="theatreDAO")
@@ -26,11 +27,12 @@ public class TheatreDAOImpl implements TheatreDAO{
         entityManager.close();
         return theatre;
     }
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+   @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Theatre acceptTheatreDetailsTransactional(Theatre theatre) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.persist(theatre);
         entityManager.close();
+        System.out.println("acceptTheatreDetailsTransactional()---> "+theatre);
         return theatre;
     }
 
@@ -57,7 +59,9 @@ public class TheatreDAOImpl implements TheatreDAO{
     }
 
     public List<Theatre> getAllTheatreDetails() {
-        Query query = entityManagerFactory.createEntityManager().createQuery("from Theatre t",Theatre.class);
-        return (List<Theatre>)query.getResultList();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        TypedQuery<Theatre>  query = entityManager.createQuery("from Theatre t",Theatre.class);
+        query.setMaxResults(2);
+        return query.getResultList();
     }
 }
