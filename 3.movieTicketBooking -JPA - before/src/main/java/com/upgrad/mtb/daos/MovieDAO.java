@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository("movieDAO")
 public interface MovieDAO extends JpaRepository<Movie, Integer> {
+
     @Query("From Movie m Where m.name = :name")
     Movie getMovieDetails(@Param("name") String name);
 

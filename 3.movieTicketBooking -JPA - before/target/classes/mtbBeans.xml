@@ -11,6 +11,7 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.upgrad.mtb"/>
+
     <jpa:repositories base-package="com.upgrad.mtb.daos"
                       entity-manager-factory-ref="entityManagerFactory"/>
 

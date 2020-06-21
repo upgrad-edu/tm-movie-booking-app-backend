@@ -26,14 +26,21 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
-    /*@ManyToOne
-    private Language language;
+   /* @ManyToOne
+    @JoinColumn(name="languageId")
+    private Language language;*/
+
+
+   // private Status status;
+
+    /*
+
+    @ManyToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    List<Theatre> theatres;
 
     @ManyToOne
     private Status status;
-
-    @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    List<Theatre> theatres;*/
+    */
 
     public Movie(){}
 

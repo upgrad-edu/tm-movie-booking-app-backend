@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
+//@Entity
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -6,9 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
-//@Entity
+
+@Entity
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,8 +15,7 @@ public class Status {
     @Column(unique = true, nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    List<Movie> movies;
+   // List<Movie> movies;
 
     public Status(){
     }

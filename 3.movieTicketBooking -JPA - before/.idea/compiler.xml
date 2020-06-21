@@ -7,9 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="MovieTicketBooking" />
-        <module name="3.movieTicketBooking -JPA" />
         <module name="2.movieTicketBooking -DAOImpl" />
+        <module name="3.movieTicketBooking -JPA" />
+        <module name="MovieTicketBooking" />
         <module name="3.movieTicketBooking -JPA - before" />
       </profile>
     </annotationProcessing>

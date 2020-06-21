@@ -18,14 +18,17 @@ public class Theatre {
     @Column( nullable = false)
     private int ticketPrice;
 
+
+
     /*@ManyToOne
     private City city;
 
+    @ManyToMany
+    private List<Movie> movie;
+
     @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     List<Booking> bookings;
-
-    @ManyToOne
-    private Movie movie;*/
+    */
 
     public Theatre(){}
 
