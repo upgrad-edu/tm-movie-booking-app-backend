@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
+//@Entity
 public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
