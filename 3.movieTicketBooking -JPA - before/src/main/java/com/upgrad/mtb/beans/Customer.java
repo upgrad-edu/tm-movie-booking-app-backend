@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-//@Entity
+@Entity
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -42,6 +42,14 @@ public class Customer {
         this.password = password;
         this.dateOfBirth = dateOfBirth;
     }
+    public Customer( String firstName, String lastName, String username, String password, Date dateOfBirth) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+    }
+
 
     public int getId() {
         return id;
@@ -89,5 +97,17 @@ public class Customer {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                '}';
     }
 }

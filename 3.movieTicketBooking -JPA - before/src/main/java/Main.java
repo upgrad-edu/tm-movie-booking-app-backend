@@ -1,4 +1,5 @@
 import com.upgrad.mtb.beans.*;
+import com.upgrad.mtb.daos.CustomerDAO;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.daos.TheatreDAO;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +20,7 @@ public class Main {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
 
-        MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
+        //MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
 
         //Movie CRUD operation using Spring Data
 
@@ -42,43 +43,12 @@ public class Main {
         System.out.println("Searched Movie byName :-"+movieByName2);*/
 
 
-        //Pagination
+        /*CustomerDAO   customerDAO = (CustomerDAO)context.getBean("customerDAO");
+        Customer customer = new Customer("Satish" ,"Mahajan","sat","Helloworld" ,new Date("22/10/2020"));
 
+        Customer insertedCustomer=customerDAO.save(customer);
+        System.out.println(insertedCustomer);
 
-        Movie movie1 = new Movie("Dhoom","Movie about bike racing", new Date("22/10/2020"), 180, "coverPhotoURL" , "trailerURL");
-        Movie movie2 = new Movie("Shole","Movie about bike racing", new Date("22/10/2020"), 180, "coverPhotoURL" , "trailerURL");
-        Movie movie3 = new Movie("Dum","Movie about bike racing", new Date("22/10/2020"), 180, "coverPhotoURL" , "trailerURL");
-        Movie movie4 = new Movie("Hum","Movie about bike racing", new Date("22/10/2020"), 180, "coverPhotoURL" , "trailerURL");
-        Movie movie5 = new Movie("RoJA","Movie about bike racing", new Date("22/10/2020"), 180, "coverPhotoURL" , "trailerURL");
-
-
-
-
-        movieDAO.save(movie1);
-        movieDAO.save(movie2);
-        movieDAO.save(movie3);
-        movieDAO.save(movie4);
-        movieDAO.save(movie5);
-
-
-
-        Pageable pageable1 = PageRequest.of(0,2);
-
-        Page<Movie>pageResult1= movieDAO.findAll(pageable1);
-        List<Movie>list1 = pageResult1.getContent();
-        System.out.println(pageResult1);                        // page 1    movie 1 ,2
-        list1.forEach(movie -> System.out.println(movie));
-
-        Pageable pageable2= pageResult1.nextPageable();         // page 2    movie 3, 4
-        Page<Movie>pageResult2= movieDAO.findAll(pageable2);
-        System.out.println(pageResult2);
-        pageResult2.forEach(movie -> System.out.println(movie));
-
-
-        Pageable pageable3 = pageResult2.nextPageable();        //page 3 movie 5
-        Page<Movie>pageResult3= movieDAO.findAll(pageable3);
-        System.out.println(pageResult3);
-        pageResult3.forEach(movie -> System.out.println(movie));
-
+        System.out.println(customerDAO.findById(insertedCustomer.getId()).get());*/
     }
 }

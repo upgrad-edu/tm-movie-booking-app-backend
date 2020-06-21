@@ -15,7 +15,8 @@ public class Status {
     @Column(unique = true, nullable = false)
     private String status;
 
-   // List<Movie> movies;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "status")
+    List<Movie> movies;
 
     public Status(){
     }

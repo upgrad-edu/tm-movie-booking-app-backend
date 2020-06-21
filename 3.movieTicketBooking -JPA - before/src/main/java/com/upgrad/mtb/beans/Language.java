@@ -14,11 +14,11 @@ public class Language {
     private int id;
     @Column(unique = true, nullable = false)
     private String language;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,mappedBy = "language")
 
-    @JoinTable(name = "LanguageMovieDetails",
+   /* @JoinTable(name = "LanguageMovieDetails",
                 joinColumns = @JoinColumn(name="LanguageId"),
-                    inverseJoinColumns = @JoinColumn(name="MovieID"))
+                    inverseJoinColumns = @JoinColumn(name="MovieID"))*/
     List<Movie> movies;
 
     public Language() {
