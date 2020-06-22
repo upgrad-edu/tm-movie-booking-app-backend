@@ -2,6 +2,7 @@ package com.upgrad.mtb.beans;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Customer {
@@ -18,14 +19,13 @@ public class Customer {
     @Column( nullable = false)
     private Date dateOfBirth;
 
-
-   /* @Column( nullable = false)
+    @Column( nullable = false)
     @ElementCollection
     private List<String> phoneNumbers;
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     List<Booking> bookings;
     @ManyToOne
-    UserType userType;*/
+    UserType userType;
 
     public Customer() { }
 

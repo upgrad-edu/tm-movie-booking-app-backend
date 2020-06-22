@@ -1,6 +1,7 @@
 package com.upgrad.mtb.beans;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class UserType {
@@ -9,8 +10,8 @@ public class UserType {
     int id;
     @Column(unique = true, nullable = false)
     String type;
-   /* @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    List<Customer> customer;*/
+    @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    List<Customer> customer;
 
     public UserType() {
     }
