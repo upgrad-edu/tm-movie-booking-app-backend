@@ -10,12 +10,22 @@ import java.util.List;
 
 @Repository("movieDAO")
 public interface MovieDAO extends JpaRepository<Movie, Integer> {
+    @Query(value = "From Movie m Where m.name = :name")                 //Spring Data
+    List<Movie> getMovieDetailsName(@Param("name") String name);
 
-   /* @Query("From Movie m Where m.name = :name")
-    Movie getMovieDetails(@Param("name") String name);
+    @Query(value = "From Movie m Where m.duration = :duration")                 //Spring Data
+    List<Movie> getMovieDetailsDuration(@Param("duration") int  duration);
 
-    Movie findByName(String name);
-    List<Movie> findByDuration(int duration);
+    List<Movie>  findByName(String name);
 
-    List<Movie> findByDurationBetween(int duration1, int duration2);*/
+    List<Movie>  findByDuration(int duration);
+
+    List<Movie>  findByDurationBetween(int durationFrom,int durationTo);
+
+    List<Movie>  findByNameLike(String like);
+
+    List<Movie>  findByDurationIn(List<Integer>durationValues);
+
+    List<Movie>  findByDurationAndName(int duration,String name);
+
 }

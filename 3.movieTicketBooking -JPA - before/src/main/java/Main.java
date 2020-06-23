@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 public class Main {
 
-    public static void main(String[] args){
+    public static void main (String[] args){
 
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
@@ -98,8 +98,39 @@ public class Main {
         System.out.println("\n\nSearched Movies By DurationBetween");
         moviesByDurationBetween.forEach(System.out::println);*/
 
+        System.out.println("====================================================================================");
+/*
 
+        List<Movie> moviesByName = movieDAO.getMovieDetailsName("URI");
+        moviesByName.forEach(movie -> System.out.println(movie));
 
+        List<Movie> moviesByDuration = movieDAO.getMovieDetailsDuration(180);
+        moviesByDuration.forEach(movie -> System.out.println(movie));
+*/
+
+        System.out.println("====================================================================================");
+
+        List<Movie> moviesByName = movieDAO.findByName("URI");
+        moviesByName.forEach(movie -> System.out.println(movie));
+
+        List<Movie> moviesByDuration = movieDAO.findByDuration(180);
+        moviesByDuration.forEach(movie -> System.out.println(movie));
+
+        System.out.println("====================================================================================");
+        List<Movie> moviesByDurationBetween = movieDAO.findByDurationBetween(150,230);
+        moviesByDurationBetween.forEach(movie -> System.out.println(movie));
+
+        System.out.println("====================================================================================");
+        List<Movie> moviesByNameLike = movieDAO.findByNameLike("%o%");
+        moviesByDurationBetween.forEach(movie -> System.out.println(movie));
+
+        System.out.println("====================================================================================");
+
+        List<Integer> durationValues = new ArrayList<>();
+        durationValues.add(180);
+        durationValues.add(150);
+        List<Movie> moviesByDurationIn = movieDAO.findByDurationIn(durationValues);
+        moviesByDurationBetween.forEach(movie -> System.out.println(movie));
 
     }
 }
