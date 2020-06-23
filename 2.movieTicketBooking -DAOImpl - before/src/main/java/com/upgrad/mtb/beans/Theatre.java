@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 public class Theatre {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
     @Column(nullable = false)
     private String theatreName;
@@ -24,5 +24,15 @@ public class Theatre {
         this.theatreName = theatreName;
         this.noOfSeats = noOfSeats;
         this.ticketPrice = ticketPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "Theatre{" +
+                "id=" + id +
+                ", theatreName='" + theatreName + '\'' +
+                ", noOfSeats=" + noOfSeats +
+                ", ticketPrice=" + ticketPrice +
+                '}';
     }
 }

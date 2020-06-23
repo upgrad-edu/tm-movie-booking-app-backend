@@ -1,13 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+
 @Entity
 public class Status {
     @Id
@@ -16,7 +12,7 @@ public class Status {
     @Column(unique = true, nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "status")
     List<Movie> movies;
 
     public Status(){

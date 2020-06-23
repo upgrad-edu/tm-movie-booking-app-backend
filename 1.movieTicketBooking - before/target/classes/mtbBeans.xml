@@ -5,7 +5,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
-        <bean id="movie" class="com.upgrad.mtb.beans.Movie">
+    <!--property injection-->
+       <!-- <bean id="movie" class="com.upgrad.mtb.beans.Movie">
             <property name="id" value="1" />
             <property name="name" value="zindagi na milegi dobara" />
             <property name="description" value="Hrithik Roshan starrer amazing movie" />
@@ -20,7 +21,27 @@
             <property name="name" value="zindagi na milegi dobara" />
             <property name="noOfSeats" value="100" />
             <property name="ticketPrice" value="150" />
-        </bean>
+            <property name="movie" ref ="movie"/>
+        </bean>-->
+
+        <!--constructor injection-->
+    <bean id="movie" class="com.upgrad.mtb.beans.Movie">
+        <constructor-arg name="id" value="1" />
+        <constructor-arg name="name" value="zindagi na milegi dobara" />
+        <constructor-arg name="description" value="Hrithik Roshan starrer amazing movie" />
+        <constructor-arg name="releaseDate" value="01/12/2020" />
+        <constructor-arg name="duration" value="180" />
+        <constructor-arg name="coverPhotoURL" value="coverURLExample" />
+        <constructor-arg name="trailerURL" value="trailerURLExample" />
+    </bean>
+
+    <bean id="theatre" class="com.upgrad.mtb.beans.Theatre">
+        <constructor-arg name="id" value="1" />
+        <constructor-arg name="name" value="zindagi na milegi dobara" />
+        <constructor-arg name="noOfSeats" value="100" />
+        <constructor-arg name="ticketPrice" value="150" />
+        <constructor-arg name="movie" ref ="movie"/>
+    </bean>
 
 
 </beans>

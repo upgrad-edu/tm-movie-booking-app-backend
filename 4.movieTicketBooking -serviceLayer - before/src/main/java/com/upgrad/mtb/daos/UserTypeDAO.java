@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository("userTypeDAO")
 public interface UserTypeDAO extends JpaRepository<UserType, Integer> {
-    UserType findDistinctByUserType(String userType);
+    UserType findDistinctByType(String type);
 }

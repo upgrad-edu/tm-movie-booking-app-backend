@@ -1,7 +1,7 @@
 package com.upgrad.mtb.services;
 
-import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.beans.Movie;
+import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

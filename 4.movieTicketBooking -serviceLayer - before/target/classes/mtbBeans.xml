@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="
-		http://www.springframework.org/schema/beans
-		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context
-		http://www.springframework.org/schema/context/spring-context-3.0.xsd
-		http://www.springframework.org/schema/tx
-		http://www.springframework.org/schema/tx/spring-tx.xsd
-		http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/data/jpa https://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.upgrad.mtb"/>
+    <jpa:repositories base-package="com.upgrad.mtb.daos"
+                      entity-manager-factory-ref="entityManagerFactory"/>
+    <!-- enable the configuration of transactional behavior based on annotations -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-        <!--<property name="url" value="jdbc:oracle:thin:@localhost:1521/orcl" />-->
+        &lt;!&ndash;<property name="url" value="jdbc:oracle:thin:@localhost:1521/orcl" />&ndash;&gt;
         <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
         <property name="username" value="SYSTEM" />
-        <property name="password" value="wanted007" />
+        <property name="password" value="OraclePassword" />
+    </bean>-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${db.driverClassName}" />
+        <property name="url" value="${db.url}" />
+        <property name="username" value="${db.SYSTEM}" />
+        <property name="password" value="${db.password}" />
     </bean>
 
     <bean id="jpaVendorAdapter"
@@ -40,20 +46,29 @@
         <property name="packagesToScan" value="com.upgrad.mtb.beans"/>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>  <!--create property into mtbProject.propeties-->
+                <prop key="hibernate.show_sql">true</prop> <!--create property into mtbProject.propeties-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</prop> <!--create property into mtbProject.propeties-->
             </props>
         </property>
     </bean>
 
-    <!-- enable the configuration of transactional behavior based on annotations -->
-    <tx:annotation-driven transaction-manager="transactionManager" />
+
     <!-- Transactions -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
         <property name="dataSource" ref="dataSource" />
         <property name="jpaDialect" ref="jpaDialect" />
     </bean>
+    <bean id="propertyConfigurerService"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:mtbProject.properties</value>
+            </list>
+        </property>
+    </bean>
+
+
 
 </beans>
