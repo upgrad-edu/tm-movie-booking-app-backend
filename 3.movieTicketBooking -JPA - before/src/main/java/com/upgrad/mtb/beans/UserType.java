@@ -13,8 +13,9 @@ public class UserType {
     int id;
     @Column(unique = true, nullable = false)
     String type;
-   /* @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    List<Customer> customer;*/
+
+    @OneToMany(mappedBy = "userType")
+    List<Customer>customers;
 
     public UserType() {
     }

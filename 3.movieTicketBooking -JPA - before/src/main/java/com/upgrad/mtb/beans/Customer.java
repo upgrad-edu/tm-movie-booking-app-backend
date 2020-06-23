@@ -23,6 +23,16 @@ public class Customer {
     @Column( nullable = false)
     private Date dateOfBirth;
 
+    @ManyToOne
+    UserType userType;
+
+
+    @ElementCollection
+            //@CollectionTable
+    List<String> mobileNumbers;
+
+
+
 
    /* @Column( nullable = false)
     @ElementCollection

@@ -26,11 +26,12 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
-    @ManyToMany(mappedBy ="movies")
+    @ManyToMany(mappedBy ="movies",cascade = CascadeType.ALL)
     List<Theatre> theatres;
 
+
+
     @ManyToOne
-    @JoinColumn(name="languageId")
     private Language language;
 
     @ManyToOne
@@ -110,6 +111,30 @@ public class Movie {
 
     public void setTrailerURL(String trailerURL) {
         this.trailerURL = trailerURL;
+    }
+
+    public List<Theatre> getTheatres() {
+        return theatres;
+    }
+
+    public void setTheatres(List<Theatre> theatres) {
+        this.theatres = theatres;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override

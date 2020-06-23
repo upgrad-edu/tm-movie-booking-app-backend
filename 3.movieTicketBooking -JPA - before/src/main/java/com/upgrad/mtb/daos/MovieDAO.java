@@ -11,11 +11,11 @@ import java.util.List;
 @Repository("movieDAO")
 public interface MovieDAO extends JpaRepository<Movie, Integer> {
 
-    @Query("From Movie m Where m.name = :name")
+   /* @Query("From Movie m Where m.name = :name")
     Movie getMovieDetails(@Param("name") String name);
 
     Movie findByName(String name);
     List<Movie> findByDuration(int duration);
 
-    List<Movie> findByDurationBetween(int duration1, int duration2);
+    List<Movie> findByDurationBetween(int duration1, int duration2);*/
 }
