@@ -20,7 +20,7 @@ public class Customer {
     @Column( nullable = false)
     private String firstName;
     private String lastName;
-    @Column(unique = true, nullable = false)
+    @Column( nullable = false)
     private String username;
     @Column( nullable = false)
     private String password;
@@ -31,11 +31,10 @@ public class Customer {
     private List<String> phoneNumbers;
 
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("booking_customer")
+    @JsonManagedReference("customer_booking")
     List<Booking> bookings;
-    @ManyToOne
-    @JsonBackReference("booking_customer")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference("userType_customer")
     UserType userType;
 
     public Customer() {
@@ -51,6 +50,19 @@ public class Customer {
         this.bookings = bookings;
         this.userType = userType;
     }
+
+    public Customer(int id, String firstName, String lastName, String username,  String password, Date dateOfBirth, List<String> phoneNumbers, List<Booking> bookings, UserType userType) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+        this.phoneNumbers = phoneNumbers;
+        this.bookings = bookings;
+        this.userType = userType;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -70,5 +82,22 @@ public class Customer {
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName, username, password, dateOfBirth, phoneNumbers, bookings, userType);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", phoneNumbers=" + phoneNumbers +
+                ", bookings=" + bookings +
+                ", userType=" + userType.getUserType() +
+                ", userType=" + userType.getId() +
+                ", userType=" + userType.getClass() +
+                '}';
     }
 }

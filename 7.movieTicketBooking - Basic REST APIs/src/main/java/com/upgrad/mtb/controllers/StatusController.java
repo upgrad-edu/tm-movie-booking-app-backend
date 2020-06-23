@@ -24,24 +24,24 @@ public class StatusController {
     }
 
     //STATUS CONTROLLER
-    @PostMapping(value="/newStatus",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    void newStatus(@RequestBody Status status) {
-        statusService.acceptStatusDetails(status);
+    @PostMapping(value="/statuses",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+    public Status newStatus(@RequestBody Status status) {
+       return statusService.acceptStatusDetails(status);
     }
 
-    @GetMapping("/getStatusDetails")
-    public Status getStatusDetails(@RequestParam int id) throws StatusDetailsNotFoundException {
+    @GetMapping("/statuses/{id}")
+    public Status getStatusDetails(@PathVariable("id") int id) throws StatusDetailsNotFoundException {
         System.out.println(statusService.getStatusDetails(id));
         return statusService.getStatusDetails(id);
     }
 
-    @RequestMapping(value="/getAllStatusDetails",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+    @GetMapping(value="/statuses",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     public List<Status> findAllStatus() {
         return statusService.getAllStatusDetails();
     }
 
-    @DeleteMapping("/deleteStatus")
-    public ResponseEntity<String> removeStatusDetails(@RequestParam int id) throws StatusDetailsNotFoundException{
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> removeStatusDetails(@PathVariable("id") int id) throws StatusDetailsNotFoundException{
         statusService.deleteStatus(id);
         return new ResponseEntity<>("Status details successfully removed ",HttpStatus.OK);
     }

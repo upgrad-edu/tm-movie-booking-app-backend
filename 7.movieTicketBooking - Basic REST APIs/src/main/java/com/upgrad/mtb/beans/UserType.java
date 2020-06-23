@@ -17,8 +17,7 @@ public class UserType {
     @Column(unique = true , nullable = false)
     String userType;
     @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("booking_customer")
+    @JsonManagedReference("userType_customer")
     List<Customer> customer;
 
     public UserType() {
@@ -33,4 +32,12 @@ public class UserType {
         this.userType = userType;
     }
 
+    @Override
+    public String toString() {
+        return "UserType{" +
+                "id=" + id +
+                ", userType='" + userType + '\'' +
+                ", customer=" + customer +
+                '}';
+    }
 }

@@ -23,24 +23,24 @@ public class BookingController {
     }
 
     //BOOKING CONTROLLER
-    @PostMapping(value="/newBooking",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    void newBooking(@RequestBody Booking booking) {
-        bookingService.acceptBookingDetails(booking);
+    @PostMapping(value="/bookings",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+    public Booking newBooking(@RequestBody Booking booking) {
+       return bookingService.acceptBookingDetails(booking);
     }
 
-    @GetMapping("/getBookingDetails")
-    public Booking getBookingDetails(@RequestParam int id) throws BookingDetailsNotFoundException {
+    @GetMapping("/bookings/{id}")
+    public Booking getBookingDetails(@PathVariable("id") int id) throws BookingDetailsNotFoundException {
         System.out.println(bookingService.getBookingDetails(id));
         return bookingService.getBookingDetails(id);
     }
 
-    @RequestMapping(value="/getAllBookingDetails",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+    @GetMapping(value="/bookings",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     public List<Booking> findAllBookings() {
         return bookingService.getAllBookingDetails();
     }
 
-    @DeleteMapping("/deleteBooking")
-    public ResponseEntity<String> removeBookingDetails(@RequestParam int id) throws BookingDetailsNotFoundException{
+    @DeleteMapping("/bookings/{id}")
+    public ResponseEntity<String> removeBookingDetails(@PathVariable("id") int id) throws BookingDetailsNotFoundException{
         bookingService.deleteBooking(id);
         return new ResponseEntity<>("Booking details successfully removed ",HttpStatus.OK);
     }

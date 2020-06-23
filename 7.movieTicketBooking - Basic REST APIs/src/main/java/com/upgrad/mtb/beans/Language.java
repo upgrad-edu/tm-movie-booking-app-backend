@@ -19,7 +19,7 @@ public class Language {
 
     @OneToMany(mappedBy = "language" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
-    @JsonManagedReference("movie_language")
+    @JsonManagedReference("language_movie")
     List<Movie> movies;
 
     public Language() {

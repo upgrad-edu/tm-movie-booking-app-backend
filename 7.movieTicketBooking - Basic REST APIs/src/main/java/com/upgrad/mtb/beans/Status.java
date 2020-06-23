@@ -19,7 +19,7 @@ public class Status {
 
     @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
-    @JsonManagedReference("movie_status")
+    @JsonManagedReference("status_movie")
     List<Movie> movies;
 
     public Status(){

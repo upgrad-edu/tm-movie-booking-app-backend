@@ -23,24 +23,24 @@ public class LanguageController {
     }
 
     //LANGUAGE CONTROLLER
-    @PostMapping(value="/newLanguage",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+    @PostMapping(value="/languages",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     void newLanguage(@RequestBody Language language) {
         languageService.acceptLanguageDetails(language);
     }
 
-    @GetMapping("/getLanguageDetails")
-    public Language getLanguageDetails(@RequestParam int id) throws LanguageDetailsNotFoundException {
+    @GetMapping("/languages/{id}")
+    public Language getLanguageDetails(@PathVariable("id") int id) throws LanguageDetailsNotFoundException {
         System.out.println(languageService.getLanguageDetails(id));
         return languageService.getLanguageDetails(id);
     }
 
-    @RequestMapping(value="/getAllLanguageDetails",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+    @GetMapping(value="/languages",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     public List<Language> findAllLanguages() {
         return languageService.getAllLanguageDetails();
     }
 
-    @DeleteMapping("/deleteLanguage")
-    public ResponseEntity<String> removeLanguageDetails(@RequestParam int id) throws LanguageDetailsNotFoundException{
+    @DeleteMapping("/languages/{id}")
+    public ResponseEntity<String> removeLanguageDetails(@PathVariable("id") int id) throws LanguageDetailsNotFoundException{
         languageService.deleteLanguage(id);
         return new ResponseEntity<>("Language details successfully removed ",HttpStatus.OK);
     }

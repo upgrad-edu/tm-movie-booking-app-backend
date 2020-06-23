@@ -19,10 +19,14 @@ public class City {
 
     @OneToMany(mappedBy = "city", fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
-    @JsonManagedReference("theatre_city")
-   List<Theatre> theatres;
+    @JsonManagedReference("city_theatre")
+    List<Theatre> theatres;
 
     public City() {
+    }
+
+    public City(String city) {
+        this.city = city;
     }
 
     public City(String city, List<Theatre> theatres) {
@@ -30,7 +34,18 @@ public class City {
         this.theatres = theatres;
     }
 
-    public City(String city) {
+    public City(int id, String city, List<Theatre> theatres) {
+        this.id = id;
         this.city = city;
+        this.theatres = theatres;
+    }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", theatres=" + theatres +
+                '}';
     }
 }

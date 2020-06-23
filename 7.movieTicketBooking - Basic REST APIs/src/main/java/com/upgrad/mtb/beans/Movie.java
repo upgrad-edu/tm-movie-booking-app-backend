@@ -30,12 +30,12 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
-    @ManyToOne
-    @JsonBackReference("movie_language")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference("language_movie")
     private Language language;
 
-    @ManyToOne
-    @JsonBackReference("movie_status")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference("status_movie")
     private Status status;
 
     @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
@@ -87,5 +87,21 @@ public class Movie {
     @Override
     public int hashCode() {
         return Objects.hash(name, description, releaseDate, duration, coverPhotoURL, trailerURL, language, status, theatres);
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration=" + duration +
+                ", coverPhotoURL='" + coverPhotoURL + '\'' +
+                ", trailerURL='" + trailerURL + '\'' +
+                ", language=" + language +
+                ", status=" + status +
+                ", theatres=" + theatres +
+                '}';
     }
 }

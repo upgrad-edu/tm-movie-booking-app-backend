@@ -20,10 +20,10 @@ public class Booking {
     @Column( nullable = false)
     private int noOfSeats;
     @ManyToOne
-    @JsonBackReference("booking_theatre")
+    @JsonBackReference("theatre_booking")
     private Theatre theatre;
     @ManyToOne
-    @JsonBackReference("booking_theatre")
+    @JsonBackReference("customer_booking")
     private Customer customer;
 
 

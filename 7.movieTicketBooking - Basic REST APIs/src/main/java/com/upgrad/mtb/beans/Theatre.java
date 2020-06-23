@@ -23,12 +23,12 @@ public class Theatre {
     private int ticketPrice;
 
     @ManyToOne
-    @JsonBackReference("theatre_city")
+    @JsonBackReference("city_theatre")
     private City city;
 
     @OneToMany(mappedBy = "theatre" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @MapKey
-    @JsonManagedReference("booking_theatre")
+    @JsonManagedReference("theatre_booking")
     List<Booking> bookings;
 
     @ManyToOne
