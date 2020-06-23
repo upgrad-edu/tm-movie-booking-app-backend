@@ -16,4 +16,6 @@ public interface MovieDAO extends JpaRepository<Movie, Integer> {
 
     Movie findByName(String name);
     List<Movie> findByDuration(int duration);
+
+    List<Movie> findByDurationBetween(int duration1, int duration2);
 }

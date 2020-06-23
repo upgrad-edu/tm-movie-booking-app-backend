@@ -26,6 +26,9 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
+    @ManyToMany(mappedBy ="movies")
+    List<Theatre> theatres;
+
     @ManyToOne
     @JoinColumn(name="languageId")
     private Language language;

@@ -12,19 +12,22 @@ public class Theatre {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     @Column( nullable = false, unique = true)
-    private String theatreName;
+    private String name;
     @Column( nullable = false)
     private int noOfSeats;
     @Column( nullable = false)
     private int ticketPrice;
 
 
+    @ManyToMany
+    @JoinTable(name="TheatreMovieDetails" ,joinColumns = @JoinColumn(name="THEATREID"),inverseJoinColumns = @JoinColumn(name="MOVIEID"))
+
+    private List<Movie> movies;
 
     /*@ManyToOne
     private City city;
 
-    @ManyToMany
-    private List<Movie> movie;
+
 
     @OneToMany(mappedBy = "theatre" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     List<Booking> bookings;
@@ -32,15 +35,15 @@ public class Theatre {
 
     public Theatre(){}
 
-    public Theatre(int id, String theatreName, int noOfSeats, int ticketPrice) {
+    public Theatre(int id, String name, int noOfSeats, int ticketPrice) {
         this.id = id;
-        this.theatreName = theatreName;
+        this.name = name;
         this.noOfSeats = noOfSeats;
         this.ticketPrice = ticketPrice;
     }
 
-    /*public Theatre(String theatreName, int noOfSeats, int ticketPrice, City city, List<Booking> bookings, Movie movie) {
-        this.theatreName = theatreName;
+    /*public Theatre(String name, int noOfSeats, int ticketPrice, City city, List<Booking> bookings, Movie movie) {
+        this.name = name;
         this.noOfSeats = noOfSeats;
         this.ticketPrice = ticketPrice;
         this.city = city;
@@ -56,12 +59,12 @@ public class Theatre {
         this.id = id;
     }
 
-    public String getTheatreName() {
-        return theatreName;
+    public String getName() {
+        return name;
     }
 
-    public void setTheatreName(String theatreName) {
-        this.theatreName = theatreName;
+    public void setName(String theatreName) {
+        this.name = name;
     }
 
     public int getNoOfSeats() {
