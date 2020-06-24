@@ -6,6 +6,7 @@ import com.upgrad.mtb.beans.Status;
 import com.upgrad.mtb.daos.LanguageDAO;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.daos.StatusDAO;
+import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import oracle.net.aso.s;
@@ -28,13 +29,16 @@ public class MovieServiceImpl implements MovieService {
     StatusDAO statusDAO;
 
     @Override
-    public Movie acceptMovieDetails(Movie movie,String languageName,int status) throws StatusDetailsNotFoundException {
-        Language language = languageDAO.findByLanguage(languageName);
+    public Movie acceptMovieDetails(Movie movie,String languageName,int status) throws StatusDetailsNotFoundException,LanguageDetailsNotFoundException {
+
+        Optional<Language> optionalLanguage = languageDAO.findByLanguage(languageName);
+        Language foundLanguage = optionalLanguage.orElseThrow(()->new LanguageDetailsNotFoundException("Language Not Found "));
         Optional<Status> optionalStatus= statusDAO.findById(status);
         Status foundStatus = optionalStatus.orElseThrow(()->new StatusDetailsNotFoundException("Status Details are not found with ID "+ status));
 
+
         movie.setStatus(foundStatus);
-        movie.setLanguage(language);
+        movie.setLanguage(foundLanguage);
         return movieDAO.save(movie);
     }
     @Override
@@ -64,11 +68,21 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie searchMovieDetailsByName(String name) {
+
         return null;
     }
 
     @Override
     public Movie movieTheatreDetails(String name) {
         return null;
+    }
+
+    @Override
+    public List<Movie> getAllMoviesDetailsByLanguage(String language) throws LanguageDetailsNotFoundException {
+        Optional<Language> optionalLanguage = languageDAO.findByLanguage(language);
+        Language foundLanguage = optionalLanguage.orElseThrow(()->new LanguageDetailsNotFoundException("Language Not Found "));
+
+        List<Movie> movies =foundLanguage.getMovies();
+        return movies;
     }
 }

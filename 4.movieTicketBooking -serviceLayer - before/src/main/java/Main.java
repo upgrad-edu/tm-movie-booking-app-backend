@@ -6,6 +6,7 @@ import com.upgrad.mtb.daos.LanguageDAO;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.daos.StatusDAO;
 import com.upgrad.mtb.daos.TheatreDAO;
+import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import com.upgrad.mtb.services.LanguageService;
 import com.upgrad.mtb.services.MovieService;
@@ -14,6 +15,7 @@ import com.upgrad.mtb.services.StatusService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -159,13 +161,13 @@ public class Main {
 
 
             movie1 = movieService.acceptMovieDetails(movie1, "Marathi", 1);
-            movie2 = movieService.acceptMovieDetails(movie2, "Marathi", 3);
+            movie2 = movieService.acceptMovieDetails(movie2, "Marathi", 2);
 
-
-            List<Movie> movies = movieService.getAllMoviesDetails();
+            System.out.println("Marathi Movies Details ");
+            List<Movie> movies = movieService.getAllMoviesDetailsByLanguage("ABC");
             movies.forEach(movie -> System.out.println(movie));
 
-        }catch (StatusDetailsNotFoundException e){
+        }catch (StatusDetailsNotFoundException | LanguageDetailsNotFoundException e){
             e.printStackTrace();
         }
     }

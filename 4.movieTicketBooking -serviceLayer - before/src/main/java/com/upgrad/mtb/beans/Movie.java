@@ -25,7 +25,7 @@ public class Movie {
     @ManyToMany(mappedBy ="movies",cascade = CascadeType.ALL)
     List<Theatre> theatres;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Language language;
 
     @ManyToOne

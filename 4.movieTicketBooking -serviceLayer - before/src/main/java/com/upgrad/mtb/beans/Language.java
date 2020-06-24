@@ -12,7 +12,7 @@ public class Language {
     @Column(unique = true, nullable = false)
     private String language;
 
-    @OneToMany(mappedBy = "language")
+    @OneToMany(mappedBy = "language",cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
     List<Movie>movies;
 
 
@@ -22,5 +22,29 @@ public class Language {
 
     public Language(String language){
         this.language = language;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
     }
 }
