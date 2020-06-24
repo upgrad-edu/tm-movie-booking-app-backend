@@ -2,11 +2,12 @@ package com.upgrad.mtb.services;
 
 import com.upgrad.mtb.beans.Movie;
 import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 
 import java.util.List;
 
 public interface MovieService {
-     Movie acceptMovieDetails(Movie movie,String languageName);
+     Movie acceptMovieDetails(Movie movie,String languageName,int status)throws StatusDetailsNotFoundException;
      Movie getMovieDetails(int id) throws MovieDetailsNotFoundException;
      boolean removeMovie(int id)  throws MovieDetailsNotFoundException ;
      List<Movie> getAllMoviesDetails();

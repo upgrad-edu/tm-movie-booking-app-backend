@@ -26,4 +26,12 @@ public class Status {
     public Status(String status){
         this.status = status;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

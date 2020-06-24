@@ -6,9 +6,11 @@ import com.upgrad.mtb.daos.LanguageDAO;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.daos.StatusDAO;
 import com.upgrad.mtb.daos.TheatreDAO;
+import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import com.upgrad.mtb.services.LanguageService;
 import com.upgrad.mtb.services.MovieService;
 import com.upgrad.mtb.services.MovieServiceImpl;
+import com.upgrad.mtb.services.StatusService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -133,32 +135,38 @@ public class Main {
         moviesByDurationBetween.forEach(movie -> System.out.println(movie));*/
 
         // Admin of application wants to execute below services for software requirment
+        try {
 
-        LanguageService languageService = (LanguageService) context.getBean("languageService");
+            StatusService statusService = (StatusService) context.getBean("statusService");
 
-        languageService.addNewLanguage(new Language("Marathi"));
+            Status releaseStatus = new Status("Released");
+            Status notReleasedStatus = new Status("NotReleased");
 
-        MovieService movieService = (MovieService) context.getBean("movieService");
+            statusService.acceptNewStatus(releaseStatus);
+            statusService.acceptNewStatus(notReleasedStatus);
 
-        // adding new in application movie
+            LanguageService languageService = (LanguageService) context.getBean("languageService");
 
-        //accept Movie details
-        Movie movie1 = new Movie("Dhoom","Movie about bike racing", new Date("2/9/2015"), 180, "coverPhotoURL" , "trailerURL");
-        Movie movie2 = new Movie("Madari","Movie child death revenge", new Date("12/3/2017"), 180, "coverPhotoURL" , "trailerURL");
+            languageService.addNewLanguage(new Language("Marathi"));
 
-        movie1= movieService.acceptMovieDetails(movie1,"Marathi");
-        movie2=movieService.acceptMovieDetails(movie2,"Marathi");
+            MovieService movieService = (MovieService) context.getBean("movieService");
 
+            // adding new in application movie
 
-        List<Movie> movies = movieService.getAllMoviesDetails();
-        movies.forEach(movie -> System.out.println(movie));
-
-
-
-
+            //accept Movie details
+            Movie movie1 = new Movie("Dhoom", "Movie about bike racing", new Date("2/9/2015"), 180, "coverPhotoURL", "trailerURL");
+            Movie movie2 = new Movie("Madari", "Movie child death revenge", new Date("6/8/2020"), 180, "coverPhotoURL", "trailerURL");
 
 
+            movie1 = movieService.acceptMovieDetails(movie1, "Marathi", 1);
+            movie2 = movieService.acceptMovieDetails(movie2, "Marathi", 3);
+
+
+            List<Movie> movies = movieService.getAllMoviesDetails();
+            movies.forEach(movie -> System.out.println(movie));
+
+        }catch (StatusDetailsNotFoundException e){
+            e.printStackTrace();
+        }
     }
-
-
 }
