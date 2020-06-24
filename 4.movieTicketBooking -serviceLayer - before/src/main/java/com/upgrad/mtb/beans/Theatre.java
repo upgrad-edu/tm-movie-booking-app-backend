@@ -14,8 +14,12 @@ public class Theatre {
     private int noOfSeats;
     @Column( nullable = false)
     private int ticketPrice;
-    @ManyToMany(mappedBy = "theatres" ,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    private List<Movie> movie;
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name="TheatreMovieDetails" ,joinColumns = @JoinColumn(name="THEATREID"),inverseJoinColumns = @JoinColumn(name="MOVIEID"))
+
+    private List<Movie> movies;
 
     /*@ManyToOne
     private City city;
@@ -30,6 +34,13 @@ public class Theatre {
 
     public Theatre(int id, String name, int noOfSeats, int ticketPrice) {
         this.id = id;
+        this.name = name;
+        this.noOfSeats = noOfSeats;
+        this.ticketPrice = ticketPrice;
+    }
+
+    public Theatre(String name, int noOfSeats, int ticketPrice) {
+
         this.name = name;
         this.noOfSeats = noOfSeats;
         this.ticketPrice = ticketPrice;
@@ -76,4 +87,11 @@ public class Theatre {
         this.ticketPrice = ticketPrice;
     }
 
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }

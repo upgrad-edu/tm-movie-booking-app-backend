@@ -11,12 +11,10 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieDAO movieDAO ;
-
     @Override
     public Movie acceptMovieDetails(Movie movie) {
         return movieDAO.save(movie);
     }
-
     @Override
     public Movie getMovieDetails(int id) throws MovieDetailsNotFoundException {
         Movie movie = movieDAO.findById(id).orElseThrow(
@@ -24,8 +22,10 @@ public class MovieServiceImpl implements MovieService {
         return movie;
     }
 
+   
+
     @Override
-    public boolean deleteMovie(int id) throws MovieDetailsNotFoundException {
+    public boolean removeMovie (int id) throws MovieDetailsNotFoundException {
         Movie movie = getMovieDetails(id);
         movieDAO.delete(movie);
         return true;
@@ -34,5 +34,20 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<Movie> getAllMoviesDetails() {
         return movieDAO.findAll();
+    }
+
+    @Override
+    public List<Movie> searchMovieDetailsByReleaseDate(String releaseDate) {
+        return null;
+    }
+
+    @Override
+    public Movie searchMovieDetailsByName(String name) {
+        return null;
+    }
+
+    @Override
+    public Movie movieTheatreDetails(String name) {
+        return null;
     }
 }

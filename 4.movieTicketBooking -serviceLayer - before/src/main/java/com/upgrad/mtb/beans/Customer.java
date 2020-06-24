@@ -19,13 +19,24 @@ public class Customer {
     @Column( nullable = false)
     private Date dateOfBirth;
 
-    @Column( nullable = false)
+    @ManyToOne
+    UserType userType;
+
+
+    @ElementCollection
+            //@CollectionTable
+    List<String> mobileNumbers;
+
+
+
+
+   /* @Column( nullable = false)
     @ElementCollection
     private List<String> phoneNumbers;
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     List<Booking> bookings;
     @ManyToOne
-    UserType userType;
+    UserType userType;*/
 
     public Customer() { }
 
