@@ -25,8 +25,6 @@ public class Movie {
     @ManyToMany(mappedBy ="movies",cascade = CascadeType.ALL)
     List<Theatre> theatres;
 
-
-
     @ManyToOne
     private Language language;
 

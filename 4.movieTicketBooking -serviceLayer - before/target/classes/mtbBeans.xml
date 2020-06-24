@@ -17,13 +17,15 @@
     <tx:annotation-driven transaction-manager="transactionManager" />
 
 
-    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
         &lt;!&ndash;<property name="url" value="jdbc:oracle:thin:@localhost:1521/orcl" />&ndash;&gt;
         <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
         <property name="username" value="SYSTEM" />
         <property name="password" value="OraclePassword" />
     </bean>-->
+
+
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${db.driverClassName}" />
         <property name="url" value="${db.url}" />
@@ -46,9 +48,9 @@
         <property name="packagesToScan" value="com.upgrad.mtb.beans"/>
         <property name="jpaProperties">
             <props>
-                <prop key="hibernate.hbm2ddl.auto">create</prop>  <!--create property into mtbProject.propeties-->
-                <prop key="hibernate.show_sql">true</prop> <!--create property into mtbProject.propeties-->
-                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</prop> <!--create property into mtbProject.propeties-->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>  <!--create property into mtbProject.propeties-->
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop> <!--create property into mtbProject.propeties-->
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop> <!--create property into mtbProject.propeties-->
             </props>
         </property>
     </bean>
@@ -60,6 +62,7 @@
         <property name="dataSource" ref="dataSource" />
         <property name="jpaDialect" ref="jpaDialect" />
     </bean>
+
     <bean id="propertyConfigurerService"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">

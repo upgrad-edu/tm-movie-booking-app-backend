@@ -6,6 +6,9 @@ import com.upgrad.mtb.daos.LanguageDAO;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.daos.StatusDAO;
 import com.upgrad.mtb.daos.TheatreDAO;
+import com.upgrad.mtb.services.LanguageService;
+import com.upgrad.mtb.services.MovieService;
+import com.upgrad.mtb.services.MovieServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,7 +20,7 @@ public class Main {
     public static void main(String[] args) {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
-        Language marathiLanguage = new Language("Marathi");
+       /* Language marathiLanguage = new Language("Marathi");
         Language hindiLanguage = new Language("Hindi");
 
         LanguageDAO languageDAO =(LanguageDAO)context.getBean("LanguageDAO") ;
@@ -79,7 +82,7 @@ public class Main {
 
 
         // select
-       /* Movie serachdMovie = movieDAO.findById(1).get();
+       *//* Movie serachdMovie = movieDAO.findById(1).get();
         System.out.println("Searched Movie :-"+serachdMovie);
 
         Movie movieByName1 = movieDAO.findByName("Dhoom");
@@ -89,21 +92,21 @@ public class Main {
         System.out.println("Searched Movies By Duration "+moviesByDuration);
 
         Movie movieByName2 = movieDAO.getMovieDetails("Dhoom");
-        System.out.println("Searched Movie byName :-"+movieByName2);*//*
+        System.out.println("Searched Movie byName :-"+movieByName2);*//**//*
 
         List<Movie> moviesByDurationBetween = movieDAO.findByDurationBetween(130,240);
         System.out.println("\n\nSearched Movies By DurationBetween");
-        moviesByDurationBetween.forEach(System.out::println);*/
+        moviesByDurationBetween.forEach(System.out::println);*//*
 
         System.out.println("====================================================================================");
-/*
+*//*
 
         List<Movie> moviesByName = movieDAO.getMovieDetailsName("URI");
         moviesByName.forEach(movie -> System.out.println(movie));
 
         List<Movie> moviesByDuration = movieDAO.getMovieDetailsDuration(180);
         moviesByDuration.forEach(movie -> System.out.println(movie));
-*/
+*//*
 
         System.out.println("====================================================================================");
 
@@ -127,6 +130,35 @@ public class Main {
         durationValues.add(180);
         durationValues.add(150);
         List<Movie> moviesByDurationIn = movieDAO.findByDurationIn(durationValues);
-        moviesByDurationBetween.forEach(movie -> System.out.println(movie));
+        moviesByDurationBetween.forEach(movie -> System.out.println(movie));*/
+
+        // Admin of application wants to execute below services for software requirment
+
+        LanguageService languageService = (LanguageService) context.getBean("languageService");
+
+        languageService.addNewLanguage(new Language("Marathi"));
+
+        MovieService movieService = (MovieService) context.getBean("movieService");
+
+        // adding new in application movie
+
+        //accept Movie details
+        Movie movie1 = new Movie("Dhoom","Movie about bike racing", new Date("2/9/2015"), 180, "coverPhotoURL" , "trailerURL");
+        Movie movie2 = new Movie("Madari","Movie child death revenge", new Date("12/3/2017"), 180, "coverPhotoURL" , "trailerURL");
+
+        movie1= movieService.acceptMovieDetails(movie1,"Marathi");
+        movie2=movieService.acceptMovieDetails(movie2,"Marathi");
+
+
+        List<Movie> movies = movieService.getAllMoviesDetails();
+        movies.forEach(movie -> System.out.println(movie));
+
+
+
+
+
+
     }
+
+
 }

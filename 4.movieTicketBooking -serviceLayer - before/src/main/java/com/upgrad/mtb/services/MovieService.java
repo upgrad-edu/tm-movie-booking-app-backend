@@ -6,7 +6,7 @@ import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
 import java.util.List;
 
 public interface MovieService {
-     Movie acceptMovieDetails(Movie movie);
+     Movie acceptMovieDetails(Movie movie,String languageName);
      Movie getMovieDetails(int id) throws MovieDetailsNotFoundException;
      boolean removeMovie(int id)  throws MovieDetailsNotFoundException ;
      List<Movie> getAllMoviesDetails();
