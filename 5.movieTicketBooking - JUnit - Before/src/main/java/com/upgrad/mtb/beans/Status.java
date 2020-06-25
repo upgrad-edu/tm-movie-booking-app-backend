@@ -1,15 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Getter
-@Setter
+
 @Entity
 public class Status {
     @Id
@@ -18,9 +12,7 @@ public class Status {
     @Column(unique = true, nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("movie_status")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "status")
     List<Movie> movies;
 
     public Status(){
@@ -33,5 +25,13 @@ public class Status {
 
     public Status(String status){
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

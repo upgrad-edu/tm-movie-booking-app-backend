@@ -1,19 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
-@Getter
-@Setter
 @Entity
 public class Movie {
     @Id
@@ -32,62 +22,125 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
-    @ManyToOne
-    @JsonBackReference("movie_language")
+    @ManyToMany(mappedBy ="movies",cascade = CascadeType.ALL)
+    List<Theatre> theatres;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private Language language;
 
     @ManyToOne
-    @JsonBackReference("movie_status")
     private Status status;
 
-    @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("movie_theatre")
+
+    /*
+
+    @ManyToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     List<Theatre> theatres;
+
+
+    */
 
     public Movie(){}
 
-    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, Language language, Status status, List<Theatre> theatres) {
+    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.coverPhotoURL = coverPhotoURL;
         this.trailerURL = trailerURL;
-        this.language = language;
-        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(Date releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getCoverPhotoURL() {
+        return coverPhotoURL;
+    }
+
+    public void setCoverPhotoURL(String coverPhotoURL) {
+        this.coverPhotoURL = coverPhotoURL;
+    }
+
+    public String getTrailerURL() {
+        return trailerURL;
+    }
+
+    public void setTrailerURL(String trailerURL) {
+        this.trailerURL = trailerURL;
+    }
+
+    public List<Theatre> getTheatres() {
+        return theatres;
+    }
+
+    public void setTheatres(List<Theatre> theatres) {
         this.theatres = theatres;
     }
 
-    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, Language language, Status status) {
-        this.name = name;
-        this.description = description;
-        this.releaseDate = releaseDate;
-        this.duration = duration;
-        this.coverPhotoURL = coverPhotoURL;
-        this.trailerURL = trailerURL;
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
         this.status = status;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movie movie = (Movie) o;
-        return duration == movie.duration &&
-                name.equals(movie.name) &&
-                description.equals(movie.description) &&
-                releaseDate.equals(movie.releaseDate) &&
-                coverPhotoURL.equals(movie.coverPhotoURL) &&
-                trailerURL.equals(movie.trailerURL) &&
-                language.equals(movie.language) &&
-                status.equals(movie.status) &&
-                theatres.equals(movie.theatres);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, description, releaseDate, duration, coverPhotoURL, trailerURL, language, status, theatres);
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration=" + duration +
+                ", coverPhotoURL='" + coverPhotoURL + '\'' +
+                ", trailerURL='" + trailerURL + '\'' +
+                '}';
     }
 }

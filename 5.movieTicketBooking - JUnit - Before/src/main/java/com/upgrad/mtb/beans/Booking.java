@@ -1,11 +1,9 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,10 +19,8 @@ public class Booking {
     @Column( nullable = false)
     private int noOfSeats;
     @ManyToOne
-    @JsonBackReference("booking_theatre")
     private Theatre theatre;
     @ManyToOne
-    @JsonBackReference("booking_theatre")
     private Customer customer;
 
 

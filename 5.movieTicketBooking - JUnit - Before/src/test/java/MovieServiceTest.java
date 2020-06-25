@@ -2,87 +2,41 @@ import com.upgrad.mtb.beans.*;
 import com.upgrad.mtb.exceptions.*;
 import com.upgrad.mtb.services.*;
 import org.junit.*;
-import org.junit.runner.RunWith;
+import org.junit.function.ThrowingRunnable;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.ArrayList;
 import java.util.Date;
-
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath:mtbBeans.xml"})
 public class MovieServiceTest {
+    @BeforeAll
+    public static void setUpTestEnv() {
+    }
+    @BeforeEach
+    public void setUpTestMockData(){
+
+    }
+    @Test
+    public void test1(){
+        Assertions.assertThrows(MovieDetailsNotFoundException.class,()->movieService.getMovieDetails(3));
+    }
+    @Test
+    public void test2(){ }
+    @AfterEach
+    public void tearDownTestMockData(){ }
+    @AfterAll
+    public static void tearDownTestEnv(){ }
     @Autowired
     MovieService movieService;
     @Autowired
     LanguageService languageService;
     @Autowired
     StatusService statusService;
-
-    public Movie movie = new Movie();
-
-    @BeforeClass
-    public static void setUpTestEnv(){
-
-    }
-
-    @Before
-    public void setUpTestData() throws UserTypeDetailsNotFoundException, LanguageDetailsNotFoundException, StatusDetailsNotFoundException {
-        Language hindiLanguage = new Language("hindi");
-        languageService.acceptLanguageDetails(hindiLanguage);
-
-        Status adminStatus = new Status("Admin");
-        statusService.acceptStatusDetails(adminStatus);
-
-        movie.setName("Dhoom 200");
-        movie.setCoverPhotoURL("coverURL");
-        movie.setTrailerURL("trailerURL");
-        movie.setDuration(180);
-        movie.setDescription("description of movie");
-        movie.setLanguage(languageService.getLanguageDetailsByLanguageName("hindi"));
-        movie.setStatus(statusService.getStatusDetailsByStatusName("Admin"));
-        movie.setReleaseDate(new Date("22/12/2020"));
-
-    }
-
-    @Test
-    public void testAcceptMovieDetails(){
-        Movie savedMovie = movieService.acceptMovieDetails(movie);
-        Assert.assertEquals(movie,savedMovie);
-    }
-
-    @Test
-    public void testGetMovieDetailsWithCorrectData() throws MovieDetailsNotFoundException {
-        Movie savedMovie = movieService.acceptMovieDetails(movie);
-        int savedMovieId = savedMovie.getId();
-        Movie testSavedMovie =  movieService.getMovieDetails(savedMovieId);
-        Assert.assertEquals(savedMovie.getName(), testSavedMovie.getName());
-        Assert.assertEquals(savedMovie.getDuration(), testSavedMovie.getDuration());
-        Assert.assertEquals(savedMovie.getDescription(), testSavedMovie.getDescription());
-    }
-
-    @Test(expected = MovieDetailsNotFoundException.class)
-    public void testGetMovieDetailsWithInCorrectData() throws MovieDetailsNotFoundException {
-        Movie savedMovie = movieService.getMovieDetailsByMovieName("Dhoom 200");
-        int savedMovieId = savedMovie.getId();
-        Movie testSavedMovie = movieService.getMovieDetails(savedMovieId + 100);
-        Assert.assertEquals(savedMovie , testSavedMovie);
-    }
-    @Test(expected = MovieDetailsNotFoundException.class)
-    public void testGetMovieDetailsWithInCorrectMovieName() throws MovieDetailsNotFoundException {
-        Movie savedMovie =  movieService.getMovieDetailsByMovieName("XTZ 200");
-        Assert.assertEquals(movie , savedMovie);
-    }
-
-    @After
-    public void tearDownTestMockData() throws MovieDetailsNotFoundException {
-        movieService.deleteMovie(movieService.getMovieDetailsByMovieName("Dhoom 200").getId());
-    }
-
-    @AfterClass
-    public static void tearDownTestEnv(){
-
-    }
-
 }
