@@ -2,7 +2,10 @@ package com.upgrad.mtb.controllers;
 
 import com.upgrad.mtb.beans.Movie;
 import com.upgrad.mtb.beans.Theatre;
+import com.upgrad.mtb.dto.MovieDTO;
+import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.TheatreDetailsNotFoundException;
 import com.upgrad.mtb.services.MovieService;
 import com.upgrad.mtb.services.TheatreService;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class MovieController {
@@ -29,24 +33,27 @@ public class MovieController {
 
     //MOVIE CONTROLLER
     @PostMapping(value="/movies",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public Movie newMovie(@RequestBody Movie movie) {
-       return  movieService.acceptMovieDetails(movie);
+    public ResponseEntity newMovie(@RequestBody MovieDTO movieDTO) throws StatusDetailsNotFoundException, LanguageDetailsNotFoundException {
+       Movie movie  =   movieService.
+               acceptMovieDetails(movieDTO);
+       return ResponseEntity.ok(movie);
     }
 
     @GetMapping("/movies/{id}")
-    public Movie getMovieDetails(@PathVariable(name = "id") int id) throws MovieDetailsNotFoundException {
-        System.out.println(movieService.getMovieDetails(id));
-        return movieService.getMovieDetails(id);
+    public ResponseEntity getMovieDetails(@PathVariable(name = "id") int id) throws MovieDetailsNotFoundException {
+        Movie movie = movieService.getMovieDetails(id);
+        return ResponseEntity.ok(movie);
     }
 
     @PutMapping(value="/movies/{id}",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public Movie updateMovieDetails(@PathVariable(name = "id") int id, @RequestBody Movie movie) throws MovieDetailsNotFoundException {
-        return  movieService.updateMovieDetails(id,movie);
+    public ResponseEntity updateMovieDetails(@PathVariable(name = "id") int id, @RequestBody MovieDTO movieDTO) throws MovieDetailsNotFoundException, StatusDetailsNotFoundException, LanguageDetailsNotFoundException {
+        return  ResponseEntity.ok(movieService.updateMovieDetails(id,movieDTO));
     }
 
     @GetMapping(value="/movies",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public List<Movie> findAllMovies() {
-        return movieService.getAllMoviesDetails();
+    public ResponseEntity findAllMovies() {
+        List<Movie> movies = movieService.getAllMoviesDetails();
+        return  ResponseEntity.ok(movies);
     }
 
     @DeleteMapping("/movies/{id}")
@@ -56,16 +63,21 @@ public class MovieController {
     }
 
     @GetMapping(value="/movies/{movieId}/theatres",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public List<Theatre> findAllTheatresForMovie(@PathVariable("movieId") int movieId) throws MovieDetailsNotFoundException {
-        Movie movie = getMovieDetails(movieId);
-        return movie.getTheatres();
+    public ResponseEntity findAllTheatresForMovie(@PathVariable("movieId") int movieId) throws MovieDetailsNotFoundException {
+        Movie movie = movieService.getMovieDetails(movieId);
+        return ResponseEntity.ok(movie.getTheatres());
     }
 
     @DeleteMapping(value="/movies/{movieId}/theatres/{theatreId}",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public Theatre removeTheatreForMovie(@PathVariable("movieId") int movieId , @PathVariable("theatreId") int theatreId) throws MovieDetailsNotFoundException, TheatreDetailsNotFoundException {
+    public ResponseEntity removeTheatreForMovie(@PathVariable("movieId") int movieId , @PathVariable("theatreId") int theatreId) throws MovieDetailsNotFoundException, TheatreDetailsNotFoundException {
         Theatre theatre = theatreService.getTheatreDetails(theatreId);
         theatre.setMovie(null);
-        return  theatreService.updateTheatreDetails(theatreId, theatre);
+        Movie movie = movieService.getMovieDetails(movieId);
+        Set<Theatre> theatres = movie.getTheatres();
+        theatres.remove(theatre);
+        movie.setTheatres(theatres);
+        movieService.updateMovieDetails(movie);
+        return ResponseEntity.ok(theatreService.updateTheatreDetails(theatre));
     }
 
 

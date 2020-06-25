@@ -2,6 +2,8 @@ package com.upgrad.mtb.services;
 
 import com.upgrad.mtb.daos.TheatreDAO;
 import com.upgrad.mtb.beans.Theatre;
+import com.upgrad.mtb.dto.TheatreDTO;
+import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.TheatreDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,10 +15,21 @@ public class TheatreServiceImpl implements TheatreService {
     @Autowired
     @Qualifier("theatreDAO")
     TheatreDAO theatreDAO;
+    @Autowired
+    MovieService movieService;
+    @Autowired
+    CityService cityService;
 
     @Override
-    public Theatre acceptTheatreDetails(Theatre theatre) {
-        return theatreDAO.save(theatre);
+    public Theatre acceptTheatreDetails(TheatreDTO theatreDTO) throws MovieDetailsNotFoundException {
+        Theatre newTheatre = new Theatre();
+        newTheatre.setTheatreName(theatreDTO.getTheatreName());
+        newTheatre.setNoOfSeats(theatreDTO.getNoOfSeats());
+        newTheatre.setTicketPrice(theatreDTO.getTicketPrice());
+        newTheatre.setMovie(movieService.getMovieDetails(theatreDTO.getMovieId()));
+        newTheatre.setCity(cityService.getCityDetails(theatreDTO.getCityId()));
+        newTheatre.setBookings(theatreDTO.getBookings());
+        return theatreDAO.save(newTheatre);
     }
 
     @Override
@@ -27,14 +40,19 @@ public class TheatreServiceImpl implements TheatreService {
     }
 
     @Override
-    public Theatre updateTheatreDetails(int id, Theatre theatre) throws TheatreDetailsNotFoundException {
+    public Theatre updateTheatreDetails(int id, TheatreDTO theatreDTO) throws TheatreDetailsNotFoundException, MovieDetailsNotFoundException {
         Theatre initialTheatre = getTheatreDetails(id);
-        initialTheatre.setMovie(theatre.getMovie());
-        initialTheatre.setTheatreName(theatre.getTheatreName());
-        initialTheatre.setTicketPrice(theatre.getTicketPrice());
-        initialTheatre.setNoOfSeats(theatre.getNoOfSeats());
-        initialTheatre.setBookings(theatre.getBookings());
-        return acceptTheatreDetails(theatre);
+        initialTheatre.setTheatreName(theatreDTO.getTheatreName());
+        initialTheatre.setNoOfSeats(theatreDTO.getNoOfSeats());
+        initialTheatre.setTicketPrice(theatreDTO.getTicketPrice());
+        initialTheatre.setMovie(movieService.getMovieDetails(theatreDTO.getMovieId()));
+        initialTheatre.setCity(cityService.getCityDetails(theatreDTO.getCityId()));
+        initialTheatre.setBookings(theatreDTO.getBookings());
+        return theatreDAO.save(initialTheatre);
+    }
+
+    public Theatre updateTheatreDetails(Theatre theatre){
+        return theatreDAO.save(theatre);
     }
 
     @Override

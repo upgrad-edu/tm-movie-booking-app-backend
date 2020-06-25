@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,7 +30,7 @@ public class Theatre {
     @OneToMany(mappedBy = "theatre" , fetch = FetchType.LAZY , cascade = CascadeType.ALL)
     @MapKey
     @JsonManagedReference("theatre_booking")
-    List<Booking> bookings;
+    Set<Booking> bookings;
 
     @ManyToOne
     @JsonBackReference("movie_theatre")
@@ -39,7 +40,7 @@ public class Theatre {
 
     public Theatre(){}
 
-    public Theatre(String theatreName, int noOfSeats, int ticketPrice, City city, List<Booking> bookings, Movie movie) {
+    public Theatre(String theatreName, int noOfSeats, int ticketPrice, City city, Set<Booking> bookings, Movie movie) {
         this.theatreName = theatreName;
         this.noOfSeats = noOfSeats;
         this.ticketPrice = ticketPrice;

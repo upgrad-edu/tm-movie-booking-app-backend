@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -41,11 +42,11 @@ public class Movie {
     @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @MapKey
     @JsonManagedReference("movie_theatre")
-    List<Theatre> theatres;
+    Set<Theatre> theatres;
 
     public Movie(){}
 
-    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, Language language, Status status, List<Theatre> theatres) {
+    public Movie(String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL, Language language, Status status, Set<Theatre> theatres) {
         this.name = name;
         this.description = description;
         this.releaseDate = releaseDate;

@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,7 +19,7 @@ public class UserType {
     String userType;
     @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JsonManagedReference("userType_customer")
-    List<Customer> customer;
+    Set<Customer> customer;
 
     public UserType() {
     }
@@ -37,7 +38,6 @@ public class UserType {
         return "UserType{" +
                 "id=" + id +
                 ", userType='" + userType + '\'' +
-                ", customer=" + customer +
                 '}';
     }
 }

@@ -20,7 +20,7 @@ public class Customer {
     @Column( nullable = false)
     private String firstName;
     private String lastName;
-    @Column( nullable = false)
+    @Column( nullable = false , unique = true)
     private String username;
     @Column( nullable = false)
     private String password;
@@ -29,6 +29,7 @@ public class Customer {
     @Column( nullable = false)
     @ElementCollection
     private List<String> phoneNumbers;
+
 
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JsonManagedReference("customer_booking")

@@ -35,7 +35,7 @@ public class MovieTicketBookingApplication {
 			List<Language> languages = Arrays.asList(new Language("English"), new Language("Hindi"), new Language("Bengali"));
 			List<Status> statuses = Arrays.asList(new Status("Upcoming"), new Status("Released"), new Status("Blocked"));
 			cities.forEach(city -> cityDAO.save(city));
-			//userTypes.forEach(userType -> userTypeDAO.save(userType));
+			userTypes.forEach(userType -> userTypeDAO.save(userType));
 			languages.forEach(language -> languageDAO.save(language));
 			statuses.forEach(status -> statusDAO.save(status));
 		};

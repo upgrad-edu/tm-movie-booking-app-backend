@@ -4,8 +4,10 @@ import com.upgrad.mtb.beans.City;
 import com.upgrad.mtb.beans.Language;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.beans.Movie;
+import com.upgrad.mtb.dto.MovieDTO;
 import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,10 +18,24 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     @Qualifier("movieDAO")
     private MovieDAO movieDAO ;
+    @Autowired
+    LanguageService languageService;
+    @Autowired
+    StatusService statusService;
 
     @Override
-    public Movie acceptMovieDetails(Movie movie) {
-        return movieDAO.save(movie);
+    public Movie acceptMovieDetails(MovieDTO movieDTO) throws LanguageDetailsNotFoundException, StatusDetailsNotFoundException {
+        Movie newMovie = new Movie();
+        newMovie.setName(movieDTO.getName());
+        newMovie.setCoverPhotoURL(movieDTO.getCoverURL());
+        newMovie.setTrailerURL(movieDTO.getTrailerURL());
+        newMovie.setDuration(movieDTO.getDuration());
+        newMovie.setDescription(movieDTO.getDescription());
+        newMovie.setReleaseDate(movieDTO.getReleaseDate());
+        newMovie.setTheatres(movieDTO.getTheatres());
+        newMovie.setLanguage(languageService.getLanguageDetails(movieDTO.getLanguageId()));
+        newMovie.setStatus(statusService.getStatusDetails(movieDTO.getStatusId()));
+        return movieDAO.save(newMovie);
     }
 
     @Override
@@ -30,31 +46,24 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie updateMovieDetails(int id, Movie movie) throws MovieDetailsNotFoundException {
+    public Movie updateMovieDetails(int id, MovieDTO movieDTO) throws MovieDetailsNotFoundException, LanguageDetailsNotFoundException, StatusDetailsNotFoundException {
         Movie initialMovie = getMovieDetails(id);
         System.out.println("Initial movie details : " + initialMovie.toString());
-        initialMovie.setReleaseDate(movie.getReleaseDate());
-        initialMovie.setStatus(movie.getStatus());
-        initialMovie.setLanguage(movie.getLanguage());
-        initialMovie.setDescription(movie.getDescription());
-        initialMovie.setDuration(movie.getDuration());
-        initialMovie.setTrailerURL(movie.getTrailerURL());
-        initialMovie.setCoverPhotoURL(movie.getCoverPhotoURL());
-        initialMovie.setName(movie.getName());
-        initialMovie.setTheatres(movie.getTheatres());
-        acceptMovieDetails(initialMovie);
-        System.out.println("New movie details :" + getMovieDetails(id).toString());
-        return initialMovie;
+        initialMovie.setName(movieDTO.getName());
+        initialMovie.setCoverPhotoURL(movieDTO.getCoverURL());
+        initialMovie.setTrailerURL(movieDTO.getTrailerURL());
+        initialMovie.setDuration(movieDTO.getDuration());
+        initialMovie.setDescription(movieDTO.getDescription());
+        initialMovie.setReleaseDate(movieDTO.getReleaseDate());
+        initialMovie.setTheatres(movieDTO.getTheatres());
+        initialMovie.setLanguage(languageService.getLanguageDetails(movieDTO.getLanguageId()));
+        initialMovie.setStatus(statusService.getStatusDetails(movieDTO.getStatusId()));
+        return movieDAO.save(initialMovie);
     }
 
-   /* @Override
-    public Movie getMovieDetailsByMovieName(String movieName) throws MovieDetailsNotFoundException {
-        Movie myMovie = movieDAO.findByName(movieName);
-        if(myMovie == null)
-            throw new MovieDetailsNotFoundException("Details not found for :" + movieName);
-        else
-            return myMovie;
-    }*/
+    public Movie updateMovieDetails(Movie movie){
+        return movieDAO.save(movie);
+    }
 
     @Override
     public boolean deleteMovie(int id) throws MovieDetailsNotFoundException {

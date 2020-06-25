@@ -1,7 +1,11 @@
 package com.upgrad.mtb.controllers;
 
 import com.upgrad.mtb.beans.Booking;
+import com.upgrad.mtb.dto.BookingDTO;
 import com.upgrad.mtb.exceptions.BookingDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.BookingFailedException;
+import com.upgrad.mtb.exceptions.CustomerDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.TheatreDetailsNotFoundException;
 import com.upgrad.mtb.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,19 +28,22 @@ public class BookingController {
 
     //BOOKING CONTROLLER
     @PostMapping(value="/bookings",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public Booking newBooking(@RequestBody Booking booking) {
-       return bookingService.acceptBookingDetails(booking);
+    public ResponseEntity newBooking(@RequestBody BookingDTO bookingDTO) throws TheatreDetailsNotFoundException, CustomerDetailsNotFoundException, BookingFailedException {
+       Booking booking = bookingService.acceptBookingDetails(bookingDTO);
+       return ResponseEntity.ok(booking);
     }
 
     @GetMapping("/bookings/{id}")
-    public Booking getBookingDetails(@PathVariable("id") int id) throws BookingDetailsNotFoundException {
-        System.out.println(bookingService.getBookingDetails(id));
-        return bookingService.getBookingDetails(id);
+    public ResponseEntity getBookingDetails(@PathVariable("id") int id) throws BookingDetailsNotFoundException {
+        System.out.println(bookingService.getBookingDetails(id).toString());
+        Booking booking =  bookingService.getBookingDetails(id);
+        return ResponseEntity.ok(booking);
     }
 
     @GetMapping(value="/bookings",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public List<Booking> findAllBookings() {
-        return bookingService.getAllBookingDetails();
+    public ResponseEntity findAllBookings() {
+        List<Booking> bookings = bookingService.getAllBookingDetails();
+        return ResponseEntity.ok(bookings);
     }
 
     @DeleteMapping("/bookings/{id}")
