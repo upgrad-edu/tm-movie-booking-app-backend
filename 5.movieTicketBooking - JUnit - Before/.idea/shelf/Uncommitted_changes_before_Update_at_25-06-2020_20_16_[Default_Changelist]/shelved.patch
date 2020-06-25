@@ -1,0 +1,455 @@
+Index: ../2.movieTicketBooking -DAOImpl - before/src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>\r\n\r\nimport com.upgrad.mtb.beans.Customer;\r\nimport com.upgrad.mtb.beans.Movie;\r\nimport com.upgrad.mtb.beans.Theatre;\r\nimport com.upgrad.mtb.daos.MovieDAO;\r\nimport com.upgrad.mtb.daos.TheatreDAO;\r\nimport org.springframework.context.ApplicationContext;\r\nimport org.springframework.context.support.ClassPathXmlApplicationContext;\r\n\r\nimport java.util.Date;\r\n\r\npublic class Main {\r\n    public static void main(String[] args){\r\n        Movie movie = new Movie(\"Dhoom\",\"Movie about bike racing\", new Date(\"22/10/2020\"), 180, \"coverPhotoURL\" , \"trailerURL\");\r\n        Theatre theatre = new Theatre(\"Eclipse Theatres\" , 100, 150);\r\n\r\n        ApplicationContext context = new ClassPathXmlApplicationContext(\"mtbBeans.xml\");\r\n        MovieDAO movieDAO = (MovieDAO) context.getBean(\"movieDAO\");\r\n        TheatreDAO theatreDAO = (TheatreDAO) context.getBean(\"theatreDAO\");\r\n\r\n        //insert movie and theatre data\r\n        Movie savedMovie = movieDAO.acceptMovieDetails(movie);\r\n        Theatre savedTheatre = theatreDAO.acceptTheatreDetailsTransactional(theatre);\r\n\r\n        /*//delete movie and theatre data\r\n        movieDAO.deleteMovie(savedMovie.getId());\r\n        theatreDAO.deleteTheatre(savedTheatre.getId());\r\n\r\n        //get list of all movies and theatres\r\n        movieDAO.getAllMovieDetails();\r\n        theatreDAO.getAllTheatreDetails();*/\r\n        System.out.println(movieDAO.getMovieDetailsByName(\"Dhoom\"));\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../2.movieTicketBooking -DAOImpl - before/src/main/java/Main.java	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../2.movieTicketBooking -DAOImpl - before/src/main/java/Main.java	(date 1592922716670)
+@@ -16,20 +16,20 @@
+         Theatre theatre = new Theatre("Eclipse Theatres" , 100, 150);
+ 
+         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
++
++
++
++
++
+         MovieDAO movieDAO = (MovieDAO) context.getBean("movieDAO");
+-        TheatreDAO theatreDAO = (TheatreDAO) context.getBean("theatreDAO");
++
++       // TheatreDAO theatreDAO = (TheatreDAO) context.getBean("theatreDAO");
+ 
+         //insert movie and theatre data
+         Movie savedMovie = movieDAO.acceptMovieDetails(movie);
+-        Theatre savedTheatre = theatreDAO.acceptTheatreDetailsTransactional(theatre);
++        Movie movie1 = movieDAO.getMovieDetails(savedMovie.getId());
+ 
+-        /*//delete movie and theatre data
+-        movieDAO.deleteMovie(savedMovie.getId());
+-        theatreDAO.deleteTheatre(savedTheatre.getId());
+-
+-        //get list of all movies and theatres
+-        movieDAO.getAllMovieDetails();
+-        theatreDAO.getAllTheatreDetails();*/
+-        System.out.println(movieDAO.getMovieDetailsByName("Dhoom"));
++        System.out.println(movie1);
++       System.out.println(movieDAO.getMovieDetailsByName("Dhoom"));
+     }
+ }
+Index: ../1.movieTicketBooking - before/src/main/java/com/upgrad/mtb/beans/Theatre.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.upgrad.mtb.beans;\r\n\r\nimport lombok.Getter;\r\nimport lombok.Setter;\r\n\r\n@Getter\r\n@Setter\r\npublic class Theatre {\r\n    private int id;\r\n    private String name;\r\n    private int noOfSeats;\r\n    private int ticketPrice;\r\n\r\n    private Movie movie;\r\n\r\n    public Theatre(){}\r\n\r\n    public Theatre(int id, String name, int noOfSeats, int ticketPrice) {\r\n        this.id = id;\r\n        this.name = name;\r\n        this.noOfSeats = noOfSeats;\r\n        this.ticketPrice = ticketPrice;\r\n    }\r\n\r\n    public Theatre(int id, String name, int noOfSeats, int ticketPrice, Movie movie) {\r\n        this.id = id;\r\n        this.name = name;\r\n        this.noOfSeats = noOfSeats;\r\n        this.ticketPrice = ticketPrice;\r\n        this.movie = movie;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Theatre{\" +\r\n                \"id=\" + id +\r\n                \", name='\" + name + '\\'' +\r\n                \", noOfSeats=\" + noOfSeats +\r\n                \", ticketPrice=\" + ticketPrice +\r\n                \", movie=\" + movie +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../1.movieTicketBooking - before/src/main/java/com/upgrad/mtb/beans/Theatre.java	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../1.movieTicketBooking - before/src/main/java/com/upgrad/mtb/beans/Theatre.java	(date 1592922716691)
+@@ -2,6 +2,7 @@
+ 
+ import lombok.Getter;
+ import lombok.Setter;
++import org.springframework.beans.factory.annotation.Autowired;
+ 
+ @Getter
+ @Setter
+@@ -11,10 +12,9 @@
+     private int noOfSeats;
+     private int ticketPrice;
+ 
++    @Autowired
+     private Movie movie;
+-
+     public Theatre(){}
+-
+     public Theatre(int id, String name, int noOfSeats, int ticketPrice) {
+         this.id = id;
+         this.name = name;
+@@ -30,6 +30,10 @@
+         this.movie = movie;
+     }
+ 
++    @Autowired
++    public void setMovie(Movie movie){
++        this.movie=movie;
++    }
+     @Override
+     public String toString() {
+         return "Theatre{" +
+Index: ../1.movieTicketBooking - before/src/main/java/com/upgrad/mtb/beans/Movie.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.upgrad.mtb.beans;\r\n\r\nimport lombok.Getter;\r\nimport lombok.Setter;\r\nimport java.util.Date;\r\n\r\n@Getter\r\n@Setter\r\npublic class Movie {\r\n    private int id;\r\n    private String name;\r\n    private String description;\r\n    private Date releaseDate;\r\n    private int duration;\r\n    private String coverPhotoURL;\r\n    private String trailerURL;\r\n\r\n    public Movie(){}\r\n\r\n    public Movie(int id, String name, String description, Date releaseDate, int duration, String coverPhotoURL, String trailerURL) {\r\n        this.id = id;\r\n        this.name = name;\r\n        this.description = description;\r\n        this.releaseDate = releaseDate;\r\n        this.duration = duration;\r\n        this.coverPhotoURL = coverPhotoURL;\r\n        this.trailerURL = trailerURL;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"Movie{\" +\r\n                \"id=\" + id +\r\n                \", name='\" + name + '\\'' +\r\n                \", description='\" + description + '\\'' +\r\n                \", releaseDate=\" + releaseDate +\r\n                \", duration=\" + duration +\r\n                \", coverPhotoURL='\" + coverPhotoURL + '\\'' +\r\n                \", trailerURL='\" + trailerURL + '\\'' +\r\n                '}';\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../1.movieTicketBooking - before/src/main/java/com/upgrad/mtb/beans/Movie.java	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../1.movieTicketBooking - before/src/main/java/com/upgrad/mtb/beans/Movie.java	(date 1592922716704)
+@@ -3,6 +3,7 @@
+ import lombok.Getter;
+ import lombok.Setter;
+ import java.util.Date;
++import java.util.Objects;
+ 
+ @Getter
+ @Setter
+@@ -27,6 +28,35 @@
+         this.trailerURL = trailerURL;
+     }
+ 
++    @Override
++    public boolean equals(Object o) {
++        if (this == o) return true;
++        if (!(o instanceof Movie)) return false;
++
++        Movie movie = (Movie) o;
++
++        if (id != movie.id) return false;
++        if (duration != movie.duration) return false;
++        if (name != null ? !name.equals(movie.name) : movie.name != null) return false;
++        if (description != null ? !description.equals(movie.description) : movie.description != null) return false;
++        if (releaseDate != null ? !releaseDate.equals(movie.releaseDate) : movie.releaseDate != null) return false;
++        if (coverPhotoURL != null ? !coverPhotoURL.equals(movie.coverPhotoURL) : movie.coverPhotoURL != null)
++            return false;
++        return trailerURL != null ? trailerURL.equals(movie.trailerURL) : movie.trailerURL == null;
++    }
++
++    @Override
++    public int hashCode() {
++        int result = id;
++        result = 31 * result + (name != null ? name.hashCode() : 0);
++        result = 31 * result + (description != null ? description.hashCode() : 0);
++        result = 31 * result + (releaseDate != null ? releaseDate.hashCode() : 0);
++        result = 31 * result + duration;
++        result = 31 * result + (coverPhotoURL != null ? coverPhotoURL.hashCode() : 0);
++        result = 31 * result + (trailerURL != null ? trailerURL.hashCode() : 0);
++        return result;
++    }
++
+     @Override
+     public String toString() {
+         return "Movie{" +
+Index: ../3.movieTicketBooking -JPA - before/.idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile default=\"true\" name=\"Default\" enabled=\"true\" />\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"MovieTicketBooking\" />\r\n        <module name=\"2.movieTicketBooking -DAOImpl\" />\r\n        <module name=\"3.movieTicketBooking -JPA\" />\r\n        <module name=\"3.movieTicketBooking -JPA - before\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../3.movieTicketBooking -JPA - before/.idea/compiler.xml	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../3.movieTicketBooking -JPA - before/.idea/compiler.xml	(date 1593054842044)
+@@ -7,9 +7,9 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+-        <module name="MovieTicketBooking" />
+         <module name="2.movieTicketBooking -DAOImpl" />
+         <module name="3.movieTicketBooking -JPA" />
++        <module name="MovieTicketBooking" />
+         <module name="3.movieTicketBooking -JPA - before" />
+       </profile>
+     </annotationProcessing>
+Index: ../1.movieTicketBooking - before/src/main/resources/mtbBeans.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<beans xmlns=\"http://www.springframework.org/schema/beans\"\r\n       xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n       xmlns:context=\"http://www.springframework.org/schema/context\"\r\n       xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd\r\n\t\thttp://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd\">\r\n\r\n    <!--property injection-->\r\n       <!-- <bean id=\"movie\" class=\"com.upgrad.mtb.beans.Movie\">\r\n            <property name=\"id\" value=\"1\" />\r\n            <property name=\"name\" value=\"zindagi na milegi dobara\" />\r\n            <property name=\"description\" value=\"Hrithik Roshan starrer amazing movie\" />\r\n            <property name=\"releaseDate\" value=\"01/12/2020\" />\r\n            <property name=\"duration\" value=\"180\" />\r\n            <property name=\"coverPhotoURL\" value=\"coverURLExample\" />\r\n            <property name=\"trailerURL\" value=\"trailerURLExample\" />\r\n        </bean>\r\n\r\n        <bean id=\"theatre\" class=\"com.upgrad.mtb.beans.Theatre\">\r\n            <property name=\"id\" value=\"1\" />\r\n            <property name=\"name\" value=\"zindagi na milegi dobara\" />\r\n            <property name=\"noOfSeats\" value=\"100\" />\r\n            <property name=\"ticketPrice\" value=\"150\" />\r\n            <property name=\"movie\" ref =\"movie\"/>\r\n        </bean>-->\r\n\r\n        <!--constructor injection-->\r\n    <bean id=\"movie\" class=\"com.upgrad.mtb.beans.Movie\">\r\n        <constructor-arg name=\"id\" value=\"1\" />\r\n        <constructor-arg name=\"name\" value=\"zindagi na milegi dobara\" />\r\n        <constructor-arg name=\"description\" value=\"Hrithik Roshan starrer amazing movie\" />\r\n        <constructor-arg name=\"releaseDate\" value=\"01/12/2020\" />\r\n        <constructor-arg name=\"duration\" value=\"180\" />\r\n        <constructor-arg name=\"coverPhotoURL\" value=\"coverURLExample\" />\r\n        <constructor-arg name=\"trailerURL\" value=\"trailerURLExample\" />\r\n    </bean>\r\n\r\n    <bean id=\"theatre\" class=\"com.upgrad.mtb.beans.Theatre\">\r\n        <constructor-arg name=\"id\" value=\"1\" />\r\n        <constructor-arg name=\"name\" value=\"zindagi na milegi dobara\" />\r\n        <constructor-arg name=\"noOfSeats\" value=\"100\" />\r\n        <constructor-arg name=\"ticketPrice\" value=\"150\" />\r\n        <constructor-arg name=\"movie\" ref =\"movie\"/>\r\n    </bean>\r\n\r\n\r\n</beans>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../1.movieTicketBooking - before/src/main/resources/mtbBeans.xml	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../1.movieTicketBooking - before/src/main/resources/mtbBeans.xml	(date 1592922716722)
+@@ -5,8 +5,12 @@
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+ 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+ 
++
++    <context:annotation-config/>
++
++
+     <!--property injection-->
+-       <!-- <bean id="movie" class="com.upgrad.mtb.beans.Movie">
++        <bean id="movie" class="com.upgrad.mtb.beans.Movie" >
+             <property name="id" value="1" />
+             <property name="name" value="zindagi na milegi dobara" />
+             <property name="description" value="Hrithik Roshan starrer amazing movie" />
+@@ -15,16 +19,35 @@
+             <property name="coverPhotoURL" value="coverURLExample" />
+             <property name="trailerURL" value="trailerURLExample" />
+         </bean>
++    <!--<bean id="movie" class="com.upgrad.mtb.beans.Movie">
++        <property name="id" value="2" />
++        <property name="name" value="zindagi na milegi dobara" />
++        <property name="description" value="Hrithik Roshan starrer amazing movie" />
++        <property name="releaseDate" value="01/12/2020" />
++        <property name="duration" value="180" />
++        <property name="coverPhotoURL" value="coverURLExample" />
++        <property name="trailerURL" value="trailerURLExample" />
++    </bean>-->
+ 
+         <bean id="theatre" class="com.upgrad.mtb.beans.Theatre">
+             <property name="id" value="1" />
+             <property name="name" value="zindagi na milegi dobara" />
+             <property name="noOfSeats" value="100" />
+             <property name="ticketPrice" value="150" />
+-            <property name="movie" ref ="movie"/>
+-        </bean>-->
++
++        </bean>
+ 
+-        <!--constructor injection-->
++       <!-- constructor injection-->
++    <!--<bean id="movie1" class="com.upgrad.mtb.beans.Movie">
++        <constructor-arg name="id" value="1" />
++        <constructor-arg name="name" value="zindagi na milegi dobara" />
++        <constructor-arg name="description" value="Hrithik Roshan starrer amazing movie" />
++        <constructor-arg name="releaseDate" value="01/12/2020" />
++        <constructor-arg name="duration" value="180" />
++        <constructor-arg name="coverPhotoURL" value="coverURLExample" />
++        <constructor-arg name="trailerURL" value="trailerURLExample" />
++    </bean>
++
+     <bean id="movie" class="com.upgrad.mtb.beans.Movie">
+         <constructor-arg name="id" value="1" />
+         <constructor-arg name="name" value="zindagi na milegi dobara" />
+@@ -35,13 +58,13 @@
+         <constructor-arg name="trailerURL" value="trailerURLExample" />
+     </bean>
+ 
+-    <bean id="theatre" class="com.upgrad.mtb.beans.Theatre">
++    <bean id="theatre" class="com.upgrad.mtb.beans.Theatre" autowire="constructor">
+         <constructor-arg name="id" value="1" />
+         <constructor-arg name="name" value="zindagi na milegi dobara" />
+         <constructor-arg name="noOfSeats" value="100" />
+         <constructor-arg name="ticketPrice" value="150" />
+-        <constructor-arg name="movie" ref ="movie"/>
++
+     </bean>
+-
++-->
+ 
+ </beans>
+Index: ../3.movieTicketBooking -JPA - before/src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import com.upgrad.mtb.beans.*;\r\nimport com.upgrad.mtb.daos.*;\r\nimport oracle.net.aso.i;\r\nimport org.springframework.context.ApplicationContext;\r\nimport org.springframework.context.support.ClassPathXmlApplicationContext;\r\nimport org.springframework.core.env.SystemEnvironmentPropertySource;\r\nimport org.springframework.data.domain.Page;\r\nimport org.springframework.data.domain.PageRequest;\r\nimport org.springframework.data.domain.Pageable;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Arrays;\r\nimport java.util.Date;\r\nimport java.util.List;\r\npublic class Main {\r\n\r\n    public static void main (String[] args){\r\n\r\n\r\n        ApplicationContext context = new ClassPathXmlApplicationContext(\"mtbBeans.xml\");\r\n\r\n\r\n        Language marathiLanguage = new Language(\"Marathi\");\r\n        Language hindiLanguage = new Language(\"Hindi\");\r\n\r\n        LanguageDAO languageDAO =(LanguageDAO)context.getBean(\"LanguageDAO\") ;\r\n\r\n       Language insertMarathi= languageDAO.save(marathiLanguage);\r\n        Language insertedHindi = languageDAO.save(hindiLanguage);\r\n\r\n        StatusDAO statusDAO = (StatusDAO) context.getBean(\"statusDAO\");\r\n        Status releaseStatus =new Status(\"Released\");\r\n        releaseStatus = statusDAO.save(releaseStatus);\r\n\r\n\r\n        TheatreDAO theatreDAO = (TheatreDAO)context.getBean(\"theatreDAO\") ;\r\n        Theatre insertedTheatre  = theatreDAO.save(new Theatre(\"IMAX\",250,300));\r\n\r\n\r\n        MovieDAO movieDAO = (MovieDAO) context.getBean(\"movieDAO\");\r\n       // Movie CRUD operation using Spring Data\r\n\r\n        //insert\r\n        Movie movie1 = new Movie(\"Dhoom\",\"Movie about bike racing\", new Date(\"2/9/2015\"), 180, \"coverPhotoURL\" , \"trailerURL\");\r\n        Movie movie2 = new Movie(\"Madari\",\"Movie child death revenge\", new Date(\"12/3/2017\"), 180, \"coverPhotoURL\" , \"trailerURL\");\r\n        Movie movie3 = new Movie(\"URI\",\"Movie about URI attack\", new Date(\"4/7/2018\"), 150, \"coverPhotoURL\" , \"trailerURL\");\r\n        Movie movie4 = new Movie(\"Shole\",\"Movie about gabbar singh daku\", new Date(\"22/6/1986\"), 210, \"coverPhotoURL\" , \"trailerURL\");\r\n        Movie movie5 = new Movie(\"Dhoni the untold story\",\"Movie about Cricketer Mahendra singh dhoni\", new Date(\"14/5/2016\"), 210, \"coverPhotoURL\" , \"trailerURL\");\r\n        Movie movie6 = new Movie(\"Bahubali\",\"Movie about bike racing\", new Date(\"10/7/2015\"), 150, \"coverPhotoURL\" , \"trailerURL\");\r\n\r\n            movie4.setLanguage(insertedHindi);\r\n            movie2.setLanguage(insertMarathi);\r\n            movie2.setLanguage(insertedHindi);\r\n            movie3.setLanguage(insertedHindi);\r\n            movie5.setLanguage(insertedHindi);\r\n\r\n\r\n            movie1.setStatus(releaseStatus);\r\n            movie2.setStatus(releaseStatus);\r\n            movie3.setStatus(releaseStatus);\r\n            movie4.setStatus(releaseStatus);\r\n            movie5.setStatus(releaseStatus);\r\n            movie6.setStatus(releaseStatus);\r\n\r\n        movie1= movieDAO.save(movie1);\r\n        movie2=movieDAO.save(movie2);\r\n        movie2=movieDAO.save(movie3);\r\n        movie3= movieDAO.save(movie4);\r\n        movie4=movieDAO.save(movie5);\r\n        movie5= movieDAO.save(movie6);\r\n\r\n        List<Theatre> insertedTheatreList= new ArrayList<>();\r\n        insertedTheatreList.add(insertedTheatre);   // IMAX\r\n        movie1.setTheatres(insertedTheatreList);     // list\r\n\r\n        List<Movie> insertedMOvies =new ArrayList<>();\r\n        insertedMOvies.add(movie1);\r\n\r\n        insertedTheatre.setMovies(insertedMOvies);\r\n        movieDAO.save(movie1);                  //update\r\n        theatreDAO.save(insertedTheatre);       //update\r\n\r\n\r\n        // select\r\n       /* Movie serachdMovie = movieDAO.findById(1).get();\r\n        System.out.println(\"Searched Movie :-\"+serachdMovie);\r\n\r\n        Movie movieByName1 = movieDAO.findByName(\"Dhoom\");\r\n        System.out.println(\"Searched Movie byName :-\"+movieByName1);\r\n\r\n        List<Movie> moviesByDuration = movieDAO.findByDuration(180);\r\n        System.out.println(\"Searched Movies By Duration \"+moviesByDuration);\r\n\r\n        Movie movieByName2 = movieDAO.getMovieDetails(\"Dhoom\");\r\n        System.out.println(\"Searched Movie byName :-\"+movieByName2);*//*\r\n\r\n        List<Movie> moviesByDurationBetween = movieDAO.findByDurationBetween(130,240);\r\n        System.out.println(\"\\n\\nSearched Movies By DurationBetween\");\r\n        moviesByDurationBetween.forEach(System.out::println);*/\r\n\r\n        System.out.println(\"====================================================================================\");\r\n/*\r\n\r\n        List<Movie> moviesByName = movieDAO.getMovieDetailsName(\"URI\");\r\n        moviesByName.forEach(movie -> System.out.println(movie));\r\n\r\n        List<Movie> moviesByDuration = movieDAO.getMovieDetailsDuration(180);\r\n        moviesByDuration.forEach(movie -> System.out.println(movie));\r\n*/\r\n\r\n        System.out.println(\"====================================================================================\");\r\n\r\n        List<Movie> moviesByName = movieDAO.findByName(\"URI\");\r\n        moviesByName.forEach(movie -> System.out.println(movie));\r\n\r\n        List<Movie> moviesByDuration = movieDAO.findByDuration(180);\r\n        moviesByDuration.forEach(movie -> System.out.println(movie));\r\n\r\n        System.out.println(\"====================================================================================\");\r\n        List<Movie> moviesByDurationBetween = movieDAO.findByDurationBetween(150,230);\r\n        moviesByDurationBetween.forEach(movie -> System.out.println(movie));\r\n\r\n        System.out.println(\"====================================================================================\");\r\n        List<Movie> moviesByNameLike = movieDAO.findByNameLike(\"%o%\");\r\n        moviesByDurationBetween.forEach(movie -> System.out.println(movie));\r\n\r\n        System.out.println(\"====================================================================================\");\r\n\r\n        List<Integer> durationValues = new ArrayList<>();\r\n        durationValues.add(180);\r\n        durationValues.add(150);\r\n        List<Movie> moviesByDurationIn = movieDAO.findByDurationIn(durationValues);\r\n        moviesByDurationBetween.forEach(movie -> System.out.println(movie));\r\n\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../3.movieTicketBooking -JPA - before/src/main/java/Main.java	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../3.movieTicketBooking -JPA - before/src/main/java/Main.java	(date 1593054842310)
+@@ -73,10 +73,10 @@
+         insertedTheatreList.add(insertedTheatre);   // IMAX
+         movie1.setTheatres(insertedTheatreList);     // list
+ 
+-        List<Movie> insertedMOvies =new ArrayList<>();
++        /*List<Movie> insertedMOvies =new ArrayList<>();
+         insertedMOvies.add(movie1);
+ 
+-        insertedTheatre.setMovies(insertedMOvies);
++        insertedTheatre.setMovies(insertedMOvies);*/
+         movieDAO.save(movie1);                  //update
+         theatreDAO.save(insertedTheatre);       //update
+ 
+Index: ../2.movieTicketBooking -DAOImpl - before/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>com.upgrad</groupId>\r\n    <artifactId>mtb</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n    <dependencies>\r\n        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->\r\n        <dependency>\r\n            <groupId>org.hibernate</groupId>\r\n            <artifactId>hibernate-core</artifactId>\r\n            <version>5.4.17.Final</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->\r\n        <dependency>\r\n            <groupId>org.projectlombok</groupId>\r\n            <artifactId>lombok</artifactId>\r\n            <version>1.18.12</version>\r\n            <scope>provided</scope>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-core</artifactId>\r\n            <version>5.0.8.RELEASE</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-context</artifactId>\r\n            <version>5.0.8.RELEASE</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-orm</artifactId>\r\n            <version>5.0.8.RELEASE</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-tx</artifactId>\r\n            <version>5.0.8.RELEASE</version>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-aspects</artifactId>\r\n            <version>2.5</version>\r\n        </dependency>\r\n\r\n        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->\r\n        <dependency>\r\n            <groupId>org.hibernate</groupId>\r\n            <artifactId>hibernate-entitymanager</artifactId>\r\n            <version>5.0.8.Final</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.oracle</groupId>\r\n            <artifactId>ojdbc6</artifactId>\r\n            <version>1.0</version>\r\n            <scope>system</scope>\r\n            <systemPath>C:/oraclexe/app/oracle/product/11.2.0/server/jdbc/lib/ojdbc6.jar</systemPath>\r\n        </dependency>\r\n        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->\r\n        <dependency>\r\n            <groupId>javax.validation</groupId>\r\n            <artifactId>validation-api</artifactId>\r\n            <version>2.0.1.Final</version>\r\n        </dependency>\r\n\r\n    </dependencies>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../2.movieTicketBooking -DAOImpl - before/pom.xml	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../2.movieTicketBooking -DAOImpl - before/pom.xml	(date 1592922716753)
+@@ -45,13 +45,6 @@
+             <artifactId>spring-tx</artifactId>
+             <version>5.0.8.RELEASE</version>
+         </dependency>
+-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
+-        <dependency>
+-            <groupId>org.springframework</groupId>
+-            <artifactId>spring-aspects</artifactId>
+-            <version>2.5</version>
+-        </dependency>
+-
+         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+         <dependency>
+             <groupId>org.hibernate</groupId>
+@@ -63,14 +56,21 @@
+             <artifactId>ojdbc6</artifactId>
+             <version>1.0</version>
+             <scope>system</scope>
++           <!-- <systemPath>${project.basedir}/Lib/ojdbc6.jar</systemPath>-->
+             <systemPath>C:/oraclexe/app/oracle/product/11.2.0/server/jdbc/lib/ojdbc6.jar</systemPath>
+         </dependency>
+-        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
++         <!--https://mvnrepository.com/artifact/javax.validation/validation-api -->
+         <dependency>
+             <groupId>javax.validation</groupId>
+             <artifactId>validation-api</artifactId>
+             <version>2.0.1.Final</version>
+         </dependency>
++          <!--https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-aspects</artifactId>
++            <version>2.5</version>
++        </dependency>
+ 
+     </dependencies>
+ 
+Index: ../2.movieTicketBooking -DAOImpl - before/src/main/java/com/upgrad/mtb/daos/MovieDAOImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.upgrad.mtb.daos;\r\n\r\nimport com.upgrad.mtb.daos.MovieDAO;\r\nimport com.upgrad.mtb.beans.Movie;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Repository;\r\nimport org.springframework.transaction.annotation.Propagation;\r\nimport org.springframework.transaction.annotation.Transactional;\r\n\r\nimport javax.persistence.*;\r\nimport java.util.List;\r\n\r\n@Repository(value=\"movieDAO\")\r\npublic class MovieDAOImpl implements MovieDAO {\r\n\r\n    @Autowired\r\n    EntityManagerFactory entityManagerFactory;\r\n\r\n    public Movie acceptMovieDetails(Movie movie) {\r\n        EntityManager entityManager = entityManagerFactory.createEntityManager();\r\n        entityManager.getTransaction().begin();\r\n        entityManager.persist(movie);\r\n        entityManager.getTransaction().commit();\r\n        entityManager.close();\r\n        return movie;\r\n    }\r\n    @Transactional(propagation = Propagation.REQUIRES_NEW)\r\n    public Movie acceptMovieDetailsTransactional(Movie movie) {\r\n        EntityManager entityManager = entityManagerFactory.createEntityManager();\r\n        entityManager.persist(movie);\r\n        entityManager.close();\r\n        return movie;\r\n    }\r\n\r\n    public Movie getMovieDetails(int id) {\r\n        return entityManagerFactory.createEntityManager().find(Movie.class,id);\r\n    }\r\n\r\n    public boolean deleteMovie(int id) {\r\n        EntityManager entityManager = entityManagerFactory.createEntityManager();\r\n        Movie movie = entityManager.find(Movie.class, id);\r\n        entityManager.getTransaction().begin();\r\n        entityManager.remove(movie);\r\n        entityManager.getTransaction().commit();\r\n        entityManager.close();\r\n        return true;\r\n    }\r\n\r\n    public boolean deleteMovieTransactional(int id) {\r\n        EntityManager entityManager = entityManagerFactory.createEntityManager();\r\n        Movie movie = entityManager.find(Movie.class, id);\r\n        entityManager.remove(movie);\r\n        entityManager.close();\r\n        return true;\r\n    }\r\n\r\n    public List<Movie> getAllMovieDetails() {\r\n        Query query = entityManagerFactory.createEntityManager().createQuery(\"from Movie m\",Movie.class);\r\n        return (List<Movie>)query.getResultList();\r\n    }\r\n\r\n    public Movie getMovieDetailsByName(String name) {\r\n        EntityManager entityManager = entityManagerFactory.createEntityManager();\r\n        TypedQuery<Movie> query = (TypedQuery<Movie>) entityManager.createNamedQuery(\"movieDetailsByName\");\r\n        query.setParameter(\"name\",name);\r\n       return query.getSingleResult();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../2.movieTicketBooking -DAOImpl - before/src/main/java/com/upgrad/mtb/daos/MovieDAOImpl.java	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../2.movieTicketBooking -DAOImpl - before/src/main/java/com/upgrad/mtb/daos/MovieDAOImpl.java	(date 1592922716617)
+@@ -3,6 +3,7 @@
+ import com.upgrad.mtb.daos.MovieDAO;
+ import com.upgrad.mtb.beans.Movie;
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Component;
+ import org.springframework.stereotype.Repository;
+ import org.springframework.transaction.annotation.Propagation;
+ import org.springframework.transaction.annotation.Transactional;
+@@ -10,7 +11,7 @@
+ import javax.persistence.*;
+ import java.util.List;
+ 
+-@Repository(value="movieDAO")
++@Repository(value="movieDAO") //it's replace <bean> tage
+ public class MovieDAOImpl implements MovieDAO {
+ 
+     @Autowired
+@@ -19,7 +20,7 @@
+     public Movie acceptMovieDetails(Movie movie) {
+         EntityManager entityManager = entityManagerFactory.createEntityManager();
+         entityManager.getTransaction().begin();
+-        entityManager.persist(movie);
++        entityManager.persist(movie);// insert query
+         entityManager.getTransaction().commit();
+         entityManager.close();
+         return movie;
+@@ -33,7 +34,9 @@
+     }
+ 
+     public Movie getMovieDetails(int id) {
+-        return entityManagerFactory.createEntityManager().find(Movie.class,id);
++        EntityManager  entityManager = entityManagerFactory.createEntityManager();
++        Movie movie = entityManager.find(Movie.class,id);
++        return movie;
+     }
+ 
+     public boolean deleteMovie(int id) {
+@@ -55,8 +58,9 @@
+     }
+ 
+     public List<Movie> getAllMovieDetails() {
+-        Query query = entityManagerFactory.createEntityManager().createQuery("from Movie m",Movie.class);
+-        return (List<Movie>)query.getResultList();
++        EntityManager manager = entityManagerFactory.createEntityManager();
++        TypedQuery<Movie> query = manager.createQuery("from Movie m",Movie.class);      // JPQL
++        return query.getResultList();
+     }
+ 
+     public Movie getMovieDetailsByName(String name) {
+Index: ../1.movieTicketBooking - before/target/classes/mtbBeans.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<beans xmlns=\"http://www.springframework.org/schema/beans\"\r\n       xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n       xmlns:context=\"http://www.springframework.org/schema/context\"\r\n       xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd\r\n\t\thttp://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd\">\r\n\r\n    <!--property injection-->\r\n       <!-- <bean id=\"movie\" class=\"com.upgrad.mtb.beans.Movie\">\r\n            <property name=\"id\" value=\"1\" />\r\n            <property name=\"name\" value=\"zindagi na milegi dobara\" />\r\n            <property name=\"description\" value=\"Hrithik Roshan starrer amazing movie\" />\r\n            <property name=\"releaseDate\" value=\"01/12/2020\" />\r\n            <property name=\"duration\" value=\"180\" />\r\n            <property name=\"coverPhotoURL\" value=\"coverURLExample\" />\r\n            <property name=\"trailerURL\" value=\"trailerURLExample\" />\r\n        </bean>\r\n\r\n        <bean id=\"theatre\" class=\"com.upgrad.mtb.beans.Theatre\">\r\n            <property name=\"id\" value=\"1\" />\r\n            <property name=\"name\" value=\"zindagi na milegi dobara\" />\r\n            <property name=\"noOfSeats\" value=\"100\" />\r\n            <property name=\"ticketPrice\" value=\"150\" />\r\n            <property name=\"movie\" ref =\"movie\"/>\r\n        </bean>-->\r\n\r\n        <!--constructor injection-->\r\n    <bean id=\"movie\" class=\"com.upgrad.mtb.beans.Movie\">\r\n        <constructor-arg name=\"id\" value=\"1\" />\r\n        <constructor-arg name=\"name\" value=\"zindagi na milegi dobara\" />\r\n        <constructor-arg name=\"description\" value=\"Hrithik Roshan starrer amazing movie\" />\r\n        <constructor-arg name=\"releaseDate\" value=\"01/12/2020\" />\r\n        <constructor-arg name=\"duration\" value=\"180\" />\r\n        <constructor-arg name=\"coverPhotoURL\" value=\"coverURLExample\" />\r\n        <constructor-arg name=\"trailerURL\" value=\"trailerURLExample\" />\r\n    </bean>\r\n\r\n    <bean id=\"theatre\" class=\"com.upgrad.mtb.beans.Theatre\">\r\n        <constructor-arg name=\"id\" value=\"1\" />\r\n        <constructor-arg name=\"name\" value=\"zindagi na milegi dobara\" />\r\n        <constructor-arg name=\"noOfSeats\" value=\"100\" />\r\n        <constructor-arg name=\"ticketPrice\" value=\"150\" />\r\n        <constructor-arg name=\"movie\" ref =\"movie\"/>\r\n    </bean>\r\n\r\n\r\n</beans>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../1.movieTicketBooking - before/target/classes/mtbBeans.xml	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../1.movieTicketBooking - before/target/classes/mtbBeans.xml	(date 1592922716775)
+@@ -5,8 +5,12 @@
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+ 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+ 
++
++  <!--  <context:annotation-config/>-->
++
++
+     <!--property injection-->
+-       <!-- <bean id="movie" class="com.upgrad.mtb.beans.Movie">
++        <bean id="movie" class="com.upgrad.mtb.beans.Movie" >
+             <property name="id" value="1" />
+             <property name="name" value="zindagi na milegi dobara" />
+             <property name="description" value="Hrithik Roshan starrer amazing movie" />
+@@ -15,16 +19,35 @@
+             <property name="coverPhotoURL" value="coverURLExample" />
+             <property name="trailerURL" value="trailerURLExample" />
+         </bean>
++    <!--<bean id="movie" class="com.upgrad.mtb.beans.Movie">
++        <property name="id" value="2" />
++        <property name="name" value="zindagi na milegi dobara" />
++        <property name="description" value="Hrithik Roshan starrer amazing movie" />
++        <property name="releaseDate" value="01/12/2020" />
++        <property name="duration" value="180" />
++        <property name="coverPhotoURL" value="coverURLExample" />
++        <property name="trailerURL" value="trailerURLExample" />
++    </bean>-->
+ 
+         <bean id="theatre" class="com.upgrad.mtb.beans.Theatre">
+             <property name="id" value="1" />
+             <property name="name" value="zindagi na milegi dobara" />
+             <property name="noOfSeats" value="100" />
+             <property name="ticketPrice" value="150" />
+-            <property name="movie" ref ="movie"/>
+-        </bean>-->
++
++        </bean>
+ 
+-        <!--constructor injection-->
++       <!-- constructor injection-->
++    <!--<bean id="movie1" class="com.upgrad.mtb.beans.Movie">
++        <constructor-arg name="id" value="1" />
++        <constructor-arg name="name" value="zindagi na milegi dobara" />
++        <constructor-arg name="description" value="Hrithik Roshan starrer amazing movie" />
++        <constructor-arg name="releaseDate" value="01/12/2020" />
++        <constructor-arg name="duration" value="180" />
++        <constructor-arg name="coverPhotoURL" value="coverURLExample" />
++        <constructor-arg name="trailerURL" value="trailerURLExample" />
++    </bean>
++
+     <bean id="movie" class="com.upgrad.mtb.beans.Movie">
+         <constructor-arg name="id" value="1" />
+         <constructor-arg name="name" value="zindagi na milegi dobara" />
+@@ -35,13 +58,13 @@
+         <constructor-arg name="trailerURL" value="trailerURLExample" />
+     </bean>
+ 
+-    <bean id="theatre" class="com.upgrad.mtb.beans.Theatre">
++    <bean id="theatre" class="com.upgrad.mtb.beans.Theatre" autowire="constructor">
+         <constructor-arg name="id" value="1" />
+         <constructor-arg name="name" value="zindagi na milegi dobara" />
+         <constructor-arg name="noOfSeats" value="100" />
+         <constructor-arg name="ticketPrice" value="150" />
+-        <constructor-arg name="movie" ref ="movie"/>
++
+     </bean>
+-
++-->
+ 
+ </beans>
+Index: ../1.movieTicketBooking - before/src/main/java/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import com.upgrad.mtb.beans.Movie;\r\nimport com.upgrad.mtb.beans.Theatre;\r\nimport org.springframework.context.ApplicationContext;\r\nimport org.springframework.context.support.ClassPathXmlApplicationContext;\r\n\r\npublic class Main {\r\n    public static void main(String[] args){\r\n        ApplicationContext context = new ClassPathXmlApplicationContext(\"mtbBeans.xml\");\r\n        /*Movie movie = (Movie) context.getBean(\"movie\");\r\n        System.out.println(movie);*/\r\n\r\n        Theatre theatre =(Theatre) context.getBean(\"theatre\");\r\n        System.out.println(theatre);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- ../1.movieTicketBooking - before/src/main/java/Main.java	(revision cf954a15e19b366a82a751c8a89a1e5d975e37ba)
++++ ../1.movieTicketBooking - before/src/main/java/Main.java	(date 1592922716634)
+@@ -6,8 +6,6 @@
+ public class Main {
+     public static void main(String[] args){
+         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
+-        /*Movie movie = (Movie) context.getBean("movie");
+-        System.out.println(movie);*/
+ 
+         Theatre theatre =(Theatre) context.getBean("theatre");
+         System.out.println(theatre);
