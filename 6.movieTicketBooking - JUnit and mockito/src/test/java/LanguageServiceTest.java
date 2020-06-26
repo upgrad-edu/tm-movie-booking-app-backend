@@ -11,8 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import java.util.Arrays;
 import java.util.Optional;
-
+import static  org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -23,51 +25,58 @@ public class LanguageServiceTest {
     LanguageDAO languageDAO;
 
     @InjectMocks
-    LanguageServiceImpl languageService;
+    LanguageServiceImpl languageService;       // make sure default constructor must be there in the LanguageServiceImpl
+
 
     @BeforeEach
-    public void setUpTest(){
-        //Language DAO  mocking
+    public void setUPMockObjectStub(){
         Language marathiLanguage = new Language(111,"Marathi");
-
-        Mockito.when(languageDAO.save(marathiLanguage)).thenReturn(marathiLanguage);
-        Optional<Language>optionalMarathiLanguage = Optional.ofNullable(marathiLanguage);
-        Mockito.when(languageDAO.findByLanguage("Marathi")).thenReturn(optionalMarathiLanguage);
-        Mockito.when(languageDAO.findById(111)).thenReturn(optionalMarathiLanguage);
-
-
         Language hindiLanguage = new Language(222,"Hindi");
-        Mockito.when(languageDAO.save(hindiLanguage)).thenReturn(hindiLanguage);
+
+        Optional<Language> optionalMarathiLanguage = Optional.ofNullable(marathiLanguage);
+
+        when(languageDAO.save(marathiLanguage)).thenReturn(marathiLanguage);
+        when(languageDAO.findByLanguage("Marathi")).thenReturn(optionalMarathiLanguage);
+        when(languageDAO.findById(111)).thenReturn(optionalMarathiLanguage);
+        when(languageDAO.findAll()).thenReturn(Arrays.asList(marathiLanguage));
+
         Optional<Language>optionalHindiLanguage = Optional.ofNullable(hindiLanguage);
+
+        Mockito.when(languageDAO.save(hindiLanguage)).thenReturn(hindiLanguage);
         Mockito.when(languageDAO.findByLanguage("Marathi")).thenReturn(optionalHindiLanguage);
         Mockito.when(languageDAO.findById(222)).thenReturn(optionalHindiLanguage);
 
-
-        Optional<Language>nullLanguage = Optional.ofNullable(null);
-        Mockito.when(languageDAO.findByLanguage("English")).thenReturn(nullLanguage);
-        Mockito.when(languageDAO.findById(2444)).thenReturn( nullLanguage);
-
+        Optional<Language> otherLanguage = Optional.ofNullable(null);
+        when(languageDAO.findByLanguage("English")).thenReturn(otherLanguage);
+        when(languageDAO.findById(6352)).thenReturn(otherLanguage);
     }
 
-    @Test
     @DisplayName("testGetLanguageDetailsForInvalidLanguageName")
+    @Test
     public void test1(){
         Assertions.assertThrows(LanguageDetailsNotFoundException.class,()->languageService.getLanguageDetails("English"));
-        Mockito.verify(languageDAO, Mockito.times(1)).findByLanguage("English");
+        verify(languageDAO,Mockito.times(1)).findByLanguage("English");
     }
 
-
-    @Test
     @DisplayName("testGetLanguageDetailsForValidLanguageName")
-    public void test2(){
-        Language expectedLanguage = new Language(111,"Marathi");
-        Language actualLanguage= languageService.addNewLanguage(new Language(111,"Marathi"));
-        Assertions.assertEquals(expectedLanguage,actualLanguage);
-        Mockito.verify(languageDAO, Mockito.times(1)).save(new Language(111,"Marathi"));
+    @Test
+    public void test2() throws LanguageDetailsNotFoundException {
+        languageService.getLanguageDetails("Marathi");
+        verify(languageDAO,Mockito.times(1)).findByLanguage("Marathi");
     }
+
+    @DisplayName("testAddNewLanguageForValidData")
+    @Test
+    public void test3(){
+        Language expectedLanguage = new Language(111,"Marathi");
+        Language actualLanguage = languageService.addNewLanguage(new Language(111,"Marathi"));
+        Assertions.assertEquals(expectedLanguage,actualLanguage);
+        verify(languageDAO,Mockito.times(1)).save(new Language(111,"Marathi"));
+    }
+
 
     @AfterEach
-    public void tearDownTestMockData(){
+    public void tearDownUPMockObjectStub(){
 
     }
     @AfterAll

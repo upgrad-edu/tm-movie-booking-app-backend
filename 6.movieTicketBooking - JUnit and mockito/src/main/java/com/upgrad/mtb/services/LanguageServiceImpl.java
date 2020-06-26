@@ -6,11 +6,14 @@ import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("languageService")
 public class LanguageServiceImpl implements  LanguageService {
 
     @Autowired
     LanguageDAO languageDAO;
+
 
     @Override
     public Language addNewLanguage(Language language) {
@@ -19,7 +22,8 @@ public class LanguageServiceImpl implements  LanguageService {
 
     @Override
     public Language getLanguageDetails(String language) throws LanguageDetailsNotFoundException {
-        throw new LanguageDetailsNotFoundException();
+        Optional<Language> optionalLanguage = languageDAO.findByLanguage(language);
+        return optionalLanguage.orElseThrow(()->new LanguageDetailsNotFoundException("Language details Not found"));
     }
 
     @Override
