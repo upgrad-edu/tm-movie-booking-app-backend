@@ -1,6 +1,5 @@
 package com.upgrad.mtb.beans;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,11 +15,8 @@ public class City {
     private int id;
     @Column(unique = true, nullable = false)
     private String city;
-
     @OneToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("theatre_city")
-   List<Theatre> theatres;
+    List<Theatre> theatres;
 
     public City() {
     }

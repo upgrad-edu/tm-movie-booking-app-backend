@@ -1,35 +1,44 @@
 package com.upgrad.mtb.beans;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@Getter
-@Setter
 @Entity
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-    @Column(unique = true , nullable = false)
-    String userType;
-    @OneToMany(mappedBy = "userType" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @MapKey
-    @JsonManagedReference("booking_customer")
-    List<Customer> customer;
+    @Column(unique = true, nullable = false)
+    String type;
+
+    @OneToMany(mappedBy = "userType")
+    List<Customer>customers;
 
     public UserType() {
     }
 
-    public UserType(int id, String userType) {
+    public UserType(int id, String type) {
         this.id = id;
-        this.userType = userType;
+        this.type = type;
     }
 
-    public UserType(String userType){
-        this.userType = userType;
+    public UserType(String type) {
+        this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
