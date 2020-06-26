@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Main {
     public static void main(String[] args) throws CustomerDetailsNotFoundException {
-        Customer customer1 = new Customer();
+        /*Customer customer1 = new Customer();
         customer1.setFirstName("Ram");
         customer1.setLastName("Kumar");
         customer1.setUsername("mohanKumar");
@@ -18,6 +18,6 @@ public class Main {
         customer1.setDateOfBirth(new Date("22/10/1996"));
 
         ApplicationContext context = new ClassPathXmlApplicationContext("mtbBeans.xml");
-        CustomerService customerService = (CustomerService) context.getBean("customerService");
+        CustomerService customerService = (CustomerService) context.getBean("customerService");*/
     }
 }
