@@ -25,7 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer acceptCustomerDetails(CustomerDTO customerDTO) throws CustomerUserNameExistsException, UserTypeDetailsNotFoundException {
-        if(customerDAO.findByUsername(customerDTO.getUsername()).isPresent()){
+        if(!customerDAO.findByUsername(customerDTO.getUsername()).isPresent()){
                 Customer newCustomer = new Customer();
                 newCustomer.setFirstName(customerDTO.getFirstName());
                 newCustomer.setLastName(customerDTO.getLastName());
