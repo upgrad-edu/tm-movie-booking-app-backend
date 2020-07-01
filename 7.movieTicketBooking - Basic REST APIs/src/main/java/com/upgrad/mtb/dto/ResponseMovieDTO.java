@@ -17,5 +17,5 @@ public class ResponseMovieDTO {
     String trailerURL;
     int languageId;
     int statusId;
-    List<Theatre> theatres;
+    List<TheatreDTO> theatres;
 }

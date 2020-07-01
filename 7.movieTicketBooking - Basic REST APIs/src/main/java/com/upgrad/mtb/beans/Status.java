@@ -17,7 +17,7 @@ public class Status {
     @Column(unique = true, nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "status" , fetch = FetchType.EAGER)
     @MapKey
     @JsonManagedReference("status_movie")
     List<Movie> movies;

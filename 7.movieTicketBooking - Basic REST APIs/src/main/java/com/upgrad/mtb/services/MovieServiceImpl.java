@@ -1,7 +1,5 @@
 package com.upgrad.mtb.services;
 
-import com.upgrad.mtb.beans.City;
-import com.upgrad.mtb.beans.Language;
 import com.upgrad.mtb.daos.MovieDAO;
 import com.upgrad.mtb.beans.Movie;
 import com.upgrad.mtb.dto.MovieDTO;
@@ -11,6 +9,7 @@ import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 @Service(value = "movieService")
@@ -32,7 +31,7 @@ public class MovieServiceImpl implements MovieService {
         newMovie.setDuration(movieDTO.getDuration());
         newMovie.setDescription(movieDTO.getDescription());
         newMovie.setReleaseDate(movieDTO.getReleaseDate());
-        newMovie.setTheatres(movieDTO.getTheatres());
+       newMovie.setTheatres(movieDTO.getTheatres());
         newMovie.setLanguage(languageService.getLanguageDetails(movieDTO.getLanguageId()));
         newMovie.setStatus(statusService.getStatusDetails(movieDTO.getStatusId()));
         return movieDAO.save(newMovie);
@@ -65,11 +64,17 @@ public class MovieServiceImpl implements MovieService {
         return movieDAO.save(movie);
     }
 
+
+    /*public boolean deleteMovieDetails(Movie movie) throws MovieDetailsNotFoundException{
+        movieDAO.delete(movie);
+        return true;
+    }*/
     @Override
+
     public boolean deleteMovie(int id) throws MovieDetailsNotFoundException {
         Movie movie = getMovieDetails(id);
         movieDAO.delete(movie);
-        return true;
+        return  true;
     }
 
     @Override

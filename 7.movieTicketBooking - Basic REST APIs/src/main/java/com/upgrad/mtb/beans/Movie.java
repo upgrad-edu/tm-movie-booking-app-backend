@@ -39,10 +39,16 @@ public class Movie {
     @JsonBackReference("status_movie")
     private Status status;
 
-    @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.MERGE)
     @MapKey
     @JsonManagedReference("movie_theatre")
     List<Theatre> theatres;
+
+    @PreRemove
+    public void onPreRemove(){
+        this.setLanguage(null);
+        this.setStatus(null);
+    }
 
     public Movie(){}
 

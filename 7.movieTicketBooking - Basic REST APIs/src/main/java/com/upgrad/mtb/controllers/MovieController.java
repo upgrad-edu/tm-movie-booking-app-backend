@@ -52,7 +52,7 @@ public class MovieController {
             newMovieDTO.setDuration(responseMovie.getDuration());
             newMovieDTO.setStatusId(responseMovie.getStatus().getId());
             newMovieDTO.setLanguageId(responseMovie.getLanguage().getId());
-            newMovieDTO.setTheatres(responseMovie.getTheatres());
+           newMovieDTO.setTheatres(responseMovie.getTheatres());
             responseEntity = ResponseEntity.ok(newMovieDTO);
         } catch (APIException e) {
             e.printStackTrace();
