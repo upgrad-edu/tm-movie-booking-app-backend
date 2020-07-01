@@ -83,20 +83,21 @@ public class MovieController {
     }
 
     @GetMapping(value="/movies",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public ResponseEntity findAllMovies(@RequestParam(required = false) int number) throws APIException {
+    public ResponseEntity findMoviesByNumber(@RequestParam(defaultValue = "-1") int number) throws APIException {
         if(number>0){
-            List<Movie> movies = movieService.getAllMoviesDetails();
-            if(movies.size() < number)
-                throw new APIException("Invalid number of movies");
-            else{
-                List<Movie> movieList = movies.subList(Math.max(movies.size() - number, 0), movies.size());
-                return ResponseEntity.ok(movieList);
+                List<Movie> movies = movieService.getAllMoviesDetails();
+                if(movies.size() < number)
+                    throw new APIException("Invalid number of movies");
+                else{
+                    List<Movie> movieList = movies.subList(Math.max(movies.size() - number, 0), movies.size());
+                    return ResponseEntity.ok(movieList);
+                }
+            }else {
+                List<Movie> movies = movieService.getAllMoviesDetails();
+                return ResponseEntity.ok(movies);
             }
-        }else {
-            List<Movie> movies = movieService.getAllMoviesDetails();
-            return ResponseEntity.ok(movies);
-        }
     }
+
 
     @DeleteMapping("/movies/{id}")
     public ResponseEntity<String> removeMovieDetails(@PathVariable(name = "id") int id) throws MovieDetailsNotFoundException{
