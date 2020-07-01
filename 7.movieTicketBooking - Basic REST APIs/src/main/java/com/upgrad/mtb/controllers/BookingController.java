@@ -2,11 +2,9 @@ package com.upgrad.mtb.controllers;
 
 import com.upgrad.mtb.beans.Booking;
 import com.upgrad.mtb.dto.BookingDTO;
-import com.upgrad.mtb.exceptions.BookingDetailsNotFoundException;
-import com.upgrad.mtb.exceptions.BookingFailedException;
-import com.upgrad.mtb.exceptions.CustomerDetailsNotFoundException;
-import com.upgrad.mtb.exceptions.TheatreDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.*;
 import com.upgrad.mtb.services.BookingService;
+import com.upgrad.mtb.validator.BookingValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,12 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
 public class BookingController {
     @Autowired
     BookingService bookingService;
+    @Autowired
+    BookingValidator bookingValidator;
 
     @RequestMapping(value= {"/sayHelloBooking"},method= RequestMethod.GET)
     public ResponseEntity<String> sayHello(){
@@ -29,8 +31,17 @@ public class BookingController {
     //BOOKING CONTROLLER
     @PostMapping(value="/bookings",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     public ResponseEntity newBooking(@RequestBody BookingDTO bookingDTO) throws TheatreDetailsNotFoundException, CustomerDetailsNotFoundException, BookingFailedException {
-       Booking booking = bookingService.acceptBookingDetails(bookingDTO);
-       return ResponseEntity.ok(booking);
+        ResponseEntity responseEntity = null;
+        try {
+            bookingValidator.validateBooking(bookingDTO);
+            Booking responseBooking = bookingService.acceptBookingDetails(bookingDTO);
+            responseEntity = ResponseEntity.ok(responseBooking);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
+        return responseEntity;
     }
 
     @GetMapping("/bookings/{id}")

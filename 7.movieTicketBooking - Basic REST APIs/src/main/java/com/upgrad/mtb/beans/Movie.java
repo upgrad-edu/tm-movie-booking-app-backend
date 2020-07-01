@@ -31,11 +31,11 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonBackReference("language_movie")
     private Language language;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonBackReference("status_movie")
     private Status status;
 

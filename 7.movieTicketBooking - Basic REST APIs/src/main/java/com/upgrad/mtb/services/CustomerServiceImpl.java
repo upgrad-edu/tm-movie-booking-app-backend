@@ -26,17 +26,18 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer acceptCustomerDetails(CustomerDTO customerDTO) throws CustomerUserNameExistsException, UserTypeDetailsNotFoundException {
         if(customerDAO.findByUsername(customerDTO.getUsername()).isEmpty()){
-            Customer newCustomer = new Customer();
-            newCustomer.setFirstName(customerDTO.getFirstName());
-            newCustomer.setLastName(customerDTO.getLastName());
-            newCustomer.setUsername(customerDTO.getUsername());
-            newCustomer.setPassword(customerDTO.getPassword());
-            newCustomer.setPhoneNumbers(customerDTO.getPhoneNumbers());
-            newCustomer.setBookings(customerDTO.getBookings());
-            newCustomer.setDateOfBirth(customerDTO.getDateOfBirth());
-            newCustomer.setUserType(userTypeService.getUserTypeDetails(customerDTO.getUserTypeId()));
-            customerDAO.save(newCustomer);
-            return newCustomer;
+
+                Customer newCustomer = new Customer();
+                newCustomer.setFirstName(customerDTO.getFirstName());
+                newCustomer.setLastName(customerDTO.getLastName());
+                newCustomer.setUsername(customerDTO.getUsername());
+                newCustomer.setPassword(customerDTO.getPassword());
+                newCustomer.setPhoneNumbers(customerDTO.getPhoneNumbers());
+                newCustomer.setBookings(customerDTO.getBookings());
+                newCustomer.setDateOfBirth(customerDTO.getDateOfBirth());
+                newCustomer.setUserType(userTypeService.getUserTypeDetails(customerDTO.getUserTypeId()));
+                customerDAO.save(newCustomer);
+                return newCustomer;
         }else{
             throw new CustomerUserNameExistsException("This username already exists please choose another : " + customerDTO.getUsername());
         }

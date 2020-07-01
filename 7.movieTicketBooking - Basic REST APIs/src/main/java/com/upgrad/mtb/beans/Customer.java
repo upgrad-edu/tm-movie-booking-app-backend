@@ -34,7 +34,7 @@ public class Customer {
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JsonManagedReference("customer_booking")
     List<Booking> bookings;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("userType_customer")
     UserType userType;
 
