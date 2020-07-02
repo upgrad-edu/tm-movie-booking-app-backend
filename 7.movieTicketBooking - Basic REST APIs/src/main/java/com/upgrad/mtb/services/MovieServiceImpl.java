@@ -6,6 +6,8 @@ import com.upgrad.mtb.dto.MovieDTO;
 import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
 import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,11 @@ public class MovieServiceImpl implements MovieService {
     @Autowired
     StatusService statusService;
 
+    private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
+
     @Override
     public Movie acceptMovieDetails(MovieDTO movieDTO) throws LanguageDetailsNotFoundException, StatusDetailsNotFoundException {
+
         Movie newMovie = new Movie();
         newMovie.setName(movieDTO.getName());
         newMovie.setCoverPhotoURL(movieDTO.getCoverURL());
@@ -41,6 +46,7 @@ public class MovieServiceImpl implements MovieService {
     public Movie getMovieDetails(int id) throws MovieDetailsNotFoundException {
         Movie movie = movieDAO.findById(id).orElseThrow(
                 ()->  new MovieDetailsNotFoundException("movie not found for " + id));
+
         return movie;
     }
 
