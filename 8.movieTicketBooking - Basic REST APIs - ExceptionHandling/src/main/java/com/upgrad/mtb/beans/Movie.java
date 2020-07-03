@@ -31,18 +31,24 @@ public class Movie {
     @Column( nullable = false)
     private String trailerURL;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonBackReference("language_movie")
     private Language language;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JsonBackReference("status_movie")
     private Status status;
 
-    @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie" , fetch = FetchType.EAGER , cascade = CascadeType.MERGE)
     @MapKey
     @JsonManagedReference("movie_theatre")
     List<Theatre> theatres;
+
+    @PreRemove
+    public void onPreRemove(){
+        this.setLanguage(null);
+        this.setStatus(null);
+    }
 
     public Movie(){}
 

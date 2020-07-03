@@ -42,7 +42,5 @@ public class MovieValidatorImpl implements MovieValidator {
                 throw new APIException("Invalid movie release date");
             }
         }
-
-
     }
 }

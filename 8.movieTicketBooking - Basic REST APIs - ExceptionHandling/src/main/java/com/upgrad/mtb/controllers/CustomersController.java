@@ -3,18 +3,17 @@ package com.upgrad.mtb.controllers;
 import com.upgrad.mtb.beans.Booking;
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.dto.CustomerDTO;
-import com.upgrad.mtb.exceptions.BookingDetailsNotFoundException;
-import com.upgrad.mtb.exceptions.CustomerDetailsNotFoundException;
-import com.upgrad.mtb.exceptions.CustomerUserNameExistsException;
-import com.upgrad.mtb.exceptions.UserTypeDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.*;
 import com.upgrad.mtb.services.BookingService;
 import com.upgrad.mtb.services.CustomerService;
+import com.upgrad.mtb.validator.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +24,9 @@ public class CustomersController {
 
     @Autowired
     BookingService bookingService;
+
+    @Autowired
+    CustomerValidator customerValidator;
     
     @RequestMapping(value= {"/sayHelloCustomer"},method= RequestMethod.GET)
     public ResponseEntity<String> sayHello(){
@@ -34,10 +36,15 @@ public class CustomersController {
     //CUSTOMER CONTROLLER
     @PostMapping(value="/customers",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     public ResponseEntity newCustomer(@RequestBody CustomerDTO customerDTO) throws CustomerUserNameExistsException, UserTypeDetailsNotFoundException {
-        Customer customer =  customerService.acceptCustomerDetails(customerDTO);
-        System.out.println(customer.toString());
-        
-        return ResponseEntity.ok(customer);
+        ResponseEntity responseEntity = null;
+        try {
+            customerValidator.validateCustomer(customerDTO);
+            Customer responseCustomer = customerService.acceptCustomerDetails(customerDTO);
+            responseEntity = ResponseEntity.ok(responseCustomer);
+        } catch (APIException e) {
+            e.printStackTrace();
+        }
+        return responseEntity;
     }
 
     @GetMapping("/customers/{id}")

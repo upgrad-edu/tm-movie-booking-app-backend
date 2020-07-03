@@ -60,7 +60,7 @@ public class MovieController {
            newMovieDTO.setTheatres(responseMovie.getTheatres());
             responseEntity = ResponseEntity.ok(newMovieDTO);
             logger.debug("Accept new movie details",responseEntity);
-        } catch (APIException e) {
+        } catch (APIException | ParseException e) {
             e.printStackTrace();
             logger.error("Exception:" , e);
         }

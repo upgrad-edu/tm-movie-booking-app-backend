@@ -1,56 +1,124 @@
 package com.upgrad.mtb.controllers;
 
+import com.upgrad.mtb.MovieTicketBookingApplication;
 import com.upgrad.mtb.beans.Language;
 import com.upgrad.mtb.beans.Movie;
 import com.upgrad.mtb.beans.Status;
+import com.upgrad.mtb.beans.Theatre;
+import com.upgrad.mtb.dto.MovieDTO;
+import com.upgrad.mtb.exceptions.LanguageDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.MovieDetailsNotFoundException;
+import com.upgrad.mtb.exceptions.StatusDetailsNotFoundException;
 import com.upgrad.mtb.services.MovieService;
-import org.junit.jupiter.api.Test;
+import com.upgrad.mtb.services.MovieServiceImpl;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(value = MovieController.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = MovieTicketBookingApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class MovieControllerTest {
+
     @Autowired
-    private MockMvc mockMvc;
+    private TestRestTemplate restTemplate;
 
-    @MockBean
-    private MovieService movieService;
+    @Mock
+    MovieService movieService;
 
-    Movie movie = new Movie("Dhoom", "racing movie",new Date("10/20/2020"),
-                    180,"coverPhotoURL","trailerURL",
-                    new Language("Hindi"), new Status("Upcoming"));
+    @LocalServerPort
+    private int port;
+
+    private String getRootUrl() {
+        return "http://localhost:" + port;
+    }
 
     @Test
-    public void getMovieDetailsTest() throws Exception {
-        ResponseEntity responseEntity = ResponseEntity.ok(movie);
-        Mockito.when(movieService.getMovieDetails(Mockito.anyInt())).thenReturn(movie);
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders.get(
-                "/movie_app/v1/movies/13").accept(
-                MediaType.APPLICATION_JSON);
-
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-
-        System.out.println(result.getResponse());
-
-        // {"id":"Course1","name":"Spring","description":"10 Steps, 25 Examples and 10K Students","steps":["Learn Maven","Import Project","First Example","Second Example"]}
-
-        /*JSONAssert.assertEquals(expected, result.getResponse()
-                .getContentAsString(), false);*/
+    public void contextLoads() {
     }
+
+    @Test
+    public void newMovieTest() {
+        MovieDTO movieDTO = new MovieDTO();
+        movieDTO.setName("Dhoom");
+        movieDTO.setCoverURL("CoverURL");
+        movieDTO.setTrailerURL("TrailerURL");
+        movieDTO.setDuration(180);
+        movieDTO.setReleaseDate(new Date("10/10/20"));
+        movieDTO.setDescription("description");
+        movieDTO.setTheatres(new ArrayList<Theatre>());
+        movieDTO.setStatusId(3);
+        movieDTO.setLanguageId(7);
+        try {
+            Mockito.when(movieService.acceptMovieDetails(Mockito.any())).thenReturn(null);
+        } catch (LanguageDetailsNotFoundException | StatusDetailsNotFoundException e) {
+            e.printStackTrace();
+        }
+        ResponseEntity response = restTemplate.postForEntity(getRootUrl() + "/movie_app/v1/movies", movieDTO, MovieDTO.class);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void getMovieDetails() {
+        int id = 13;
+        Movie movie = new Movie("Dhoom1", "racing movie", new Date("10/20/2020"),
+                180, "coverPhotoURL", "trailerURL",
+                new Language("Hindi"), new Status("Upcoming"));
+        try {
+            Mockito.when(movieService.getMovieDetails(Mockito.anyInt())).thenReturn(movie);
+        } catch (MovieDetailsNotFoundException e) {
+            e.printStackTrace();
+        }
+        ResponseEntity response = restTemplate.getForEntity(getRootUrl() + "/movie_app/v1/movies/13", MovieDTO.class);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void removeMovieDetailsTest()  {
+        try {
+            Mockito.when(movieService.deleteMovie(Mockito.anyInt())).thenReturn(true);
+        } catch (MovieDetailsNotFoundException e) {
+            e.printStackTrace();
+        }
+        ResponseEntity response = restTemplate.getForEntity(getRootUrl() + "/movie_app/v1/movies/13", MovieDTO.class);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getBody());
+    }
+
+    @Test
+    public void getAllMovieDetails() {
+        Movie movie1 = new Movie("Dhoom1", "racing movie", new Date("10/20/2020"),
+                180, "coverPhotoURL", "trailerURL",
+                new Language("Hindi"), new Status("Upcoming"));
+        Movie movie2 = new Movie("Dhoom2", "racing movie", new Date("10/20/2020"),
+                180, "coverPhotoURL", "trailerURL",
+                new Language("Hindi"), new Status("Upcoming"));
+        Movie movie3 = new Movie("Dhoom3", "racing movie", new Date("10/20/2020"),
+                180, "coverPhotoURL", "trailerURL",
+                new Language("Hindi"), new Status("Upcoming"));
+        List<Movie> movieList = new ArrayList<>();
+        movieList.add(movie1);
+        movieList.add(movie2);
+        movieList.add(movie3);
+        Mockito.when(movieService.getAllMoviesDetails()).thenReturn(movieList);
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(getRootUrl() + "/movie_app/v1/movies/", Object[].class);
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.getBody());
+    }
+
 }
