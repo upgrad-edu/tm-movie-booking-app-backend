@@ -141,6 +141,8 @@ public class CustomerServiceImpl implements CustomerService {
             newCustomer.setBookings(customerDTO.getBookings());
             newCustomer.setDateOfBirth(customerDTO.getDateOfBirth());
             newCustomer.setUserType(userTypeService.getUserTypeDetails(customerDTO.getUserTypeId()));
+            newCustomer.setJwtToken(customerDTO.getJwtToken());
+            newCustomer.setRefreshToken(customerDTO.getRefreshToken());
             customerDAO.save(newCustomer);
             return newCustomer;
         }else{

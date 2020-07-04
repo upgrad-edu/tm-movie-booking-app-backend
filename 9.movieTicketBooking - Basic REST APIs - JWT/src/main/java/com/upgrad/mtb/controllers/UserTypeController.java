@@ -25,23 +25,23 @@ public class UserTypeController {
     }
     
     @PostMapping(value="/usertypes",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public UserType newUserType(@RequestHeader(value = "X-Access-Token") String accessToken , @RequestBody UserType userType) {
+    public UserType newUserType(@RequestBody UserType userType) {
         return  userTypeService.acceptUserTypeDetails(userType);
     }
 
     @GetMapping("/usertypes/{id}")
-    public UserType getUserTypeDetails(@RequestHeader(value = "X-Access-Token") String accessToken, @PathVariable(name = "id") int id) throws UserTypeDetailsNotFoundException {
+    public UserType getUserTypeDetails(@PathVariable(name = "id") int id) throws UserTypeDetailsNotFoundException {
         System.out.println(userTypeService.getUserTypeDetails(id));
         return userTypeService.getUserTypeDetails(id);
     }
 
     @GetMapping(value="/usertypes",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public List<UserType> findAllUserType(@RequestHeader(value = "X-Access-Token") String accessToken) {
+    public List<UserType> findAllUserType() {
         return userTypeService.getAllUserTypeDetails();
     }
 
     @DeleteMapping("/usertypes/{id}")
-    public ResponseEntity<String> removeUserTypeDetails(@RequestHeader(value = "X-Access-Token") String accessToken , @PathVariable(name = "id") int id) throws UserTypeDetailsNotFoundException{
+    public ResponseEntity<String> removeUserTypeDetails(@PathVariable(name = "id") int id) throws UserTypeDetailsNotFoundException{
         userTypeService.deleteUserType(id);
         return new ResponseEntity<>("UserType details successfully removed ",HttpStatus.OK);
     }

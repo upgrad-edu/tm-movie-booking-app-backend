@@ -17,7 +17,7 @@ public class Language {
     @Column(unique = true ,nullable = false)
     private String language;
 
-    @OneToMany(mappedBy = "language" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "language" , fetch = FetchType.EAGER)
     @MapKey
     @JsonManagedReference("language_movie")
     List<Movie> movies;

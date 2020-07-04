@@ -23,14 +23,14 @@ public class CityController {
 
     //CITY CONTROLLER
     @PostMapping(value="/cities",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public City newCity(@RequestHeader(value = "X-Access-Token") String accessToken , @RequestBody City city) {
+    public City newCity(@RequestBody City city) {
         System.out.println(city.toString());
         return cityService.acceptCityDetails(city);
     }
 
     @GetMapping("/cities/{id}")
     //@ResponseBody
-    public City getCityDetails(@RequestHeader(value = "X-Access-Token") String accessToken , @PathVariable(name = "id") int id) throws CityDetailsNotFoundException {
+    public City getCityDetails(@PathVariable(name = "id") int id) throws CityDetailsNotFoundException {
         System.out.println(cityService.getCityDetails(id));
         return cityService.getCityDetails(id);
     }
@@ -41,17 +41,17 @@ public class CityController {
     }*/
 
     @GetMapping(value="/cities",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public List<City> findAllCities(@RequestHeader(value = "X-Access-Token") String accessToken) {
+    public List<City> findAllCities() {
         return cityService.getAllCityDetails();
     }
 
     @PutMapping("/cities/{id}")
-    public City updateCityDetails(@RequestHeader(value = "X-Access-Token") String accessToken ,  @PathVariable(name = "id") int id , @RequestBody City city){
+    public City updateCityDetails( @PathVariable(name = "id") int id , @RequestBody City city){
         return cityService.updateCityDetails(id, city);
     }
 
     @DeleteMapping("/cities/{id}")
-    public ResponseEntity<String> removeCityDetails(@RequestHeader(value = "X-Access-Token") String accessToken , @PathVariable(name = "id")  int id) throws CityDetailsNotFoundException{
+    public ResponseEntity<String> removeCityDetails(@PathVariable(name = "id")  int id) throws CityDetailsNotFoundException{
         cityService.deleteCity(id);
         return new ResponseEntity<>("City details successfully removed ",HttpStatus.OK);
     }

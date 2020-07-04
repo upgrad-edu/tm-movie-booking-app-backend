@@ -35,16 +35,12 @@ public class CustomersController {
 
     //CUSTOMER CONTROLLER
     @PostMapping(value="/customers",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public ResponseEntity newCustomer(@RequestBody CustomerDTO customerDTO) throws CustomerUserNameExistsException, UserTypeDetailsNotFoundException {
+    public ResponseEntity newCustomer(@RequestBody CustomerDTO customerDTO) throws APIException , CustomerUserNameExistsException, UserTypeDetailsNotFoundException {
         ResponseEntity responseEntity = null;
-        try {
             customerValidator.validateCustomer(customerDTO);
             Customer responseCustomer = customerService.acceptCustomerDetails(customerDTO);
             responseEntity = ResponseEntity.ok(responseCustomer);
-        } catch (APIException e) {
-            e.printStackTrace();
-        }
-        return responseEntity;
+            return responseEntity;
     }
 
     @GetMapping("/customers/{id}")

@@ -29,12 +29,13 @@ public class Customer {
     @Column( nullable = false)
     @ElementCollection
     private List<String> phoneNumbers;
-
+    private String refreshToken;
+    private String jwtToken;
 
     @OneToMany(mappedBy = "customer" , fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JsonManagedReference("customer_booking")
     List<Booking> bookings;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference("userType_customer")
     UserType userType;
 

@@ -9,7 +9,7 @@ public class CustomResponse {
     private String errorMessage;
     private int statusCode;
 
-    public  CustomResponse(){
+    public CustomResponse(){
 
     }
 

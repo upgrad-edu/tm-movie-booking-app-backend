@@ -5,11 +5,13 @@ import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.dto.CustomerDTO;
 import com.upgrad.mtb.dto.LoginDTO;
 import com.upgrad.mtb.dto.RefreshTokenRequest;
+import com.upgrad.mtb.exceptions.APIException;
 import com.upgrad.mtb.exceptions.CustomException;
 import com.upgrad.mtb.exceptions.CustomerDetailsNotFoundException;
 import com.upgrad.mtb.security.jwt.JwtTokenProvider;
 import com.upgrad.mtb.services.CustomerServiceImpl;
 import com.upgrad.mtb.utils.ValidatorUtil;
+import com.upgrad.mtb.validator.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +28,21 @@ import java.util.Map;
 
 @Controller
 public class AuthController {
-
     @Autowired
     AuthenticationManager authenticationManager;
-
     @Autowired
     JwtTokenProvider jwtTokenProvider;
-
     @Autowired
     CustomerServiceImpl customerService;
+    @Autowired
+    CustomerValidator customerValidator;
+
 
     @RequestMapping(method = RequestMethod.POST, value = "/access-tokens")
     @ResponseBody
-    public ResponseEntity signIn(@RequestBody LoginDTO data) {
+    public ResponseEntity signIn(@RequestBody LoginDTO data) throws APIException {
         try {
-
+            customerValidator.validateuserLogin(data);
             String username = data.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, data.getPassword()));
             String token = jwtTokenProvider.createToken(username);
@@ -129,21 +131,18 @@ public class AuthController {
             //TODO Validation on the SignUpRequest
             String username = data.getUsername();
             String password = data.getPassword();
-            if(StringUtils.isEmpty(username) || !ValidatorUtil.isValid(username)|| StringUtils.isEmpty(password)){
-                model.put("Error", "Email id is invalid/ Password is empty");
+            if(StringUtils.isEmpty(username) ||  StringUtils.isEmpty(password)){
+                model.put("Error", "User id is invalid/ Password is empty");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(model);
             }
-            String firstName = data.getFirstName();
-
-
             String refreshToken = jwtTokenProvider.createRefreshToken(username);
             String token = jwtTokenProvider.createToken(username);
-            //add customer data
-
-
-            model.put("jwt", token);
-            model.put("refresh_token", refreshToken);
-            return ResponseEntity.status(HttpStatus.CREATED).body(model);
+           /* model.put("jwt", token);
+            model.put("refresh_token", refreshToken);*/
+           data.setJwtToken(token);
+           data.setRefreshToken(refreshToken);
+           Customer savedCustomer = customerService.acceptCustomerDetails(data);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
         } catch (Exception e) {
             throw new CustomException("Username " + data.getUsername() + " already registered", HttpStatus.UNPROCESSABLE_ENTITY);
         }

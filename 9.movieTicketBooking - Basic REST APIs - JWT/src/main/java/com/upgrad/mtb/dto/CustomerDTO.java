@@ -14,6 +14,8 @@ public class CustomerDTO {
     String username;
     String password;
     int userTypeId;
+    String jwtToken;
+    String refreshToken;
     List<String> phoneNumbers;
     List<Booking> bookings;
 }

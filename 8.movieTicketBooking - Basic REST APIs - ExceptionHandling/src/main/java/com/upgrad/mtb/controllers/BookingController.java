@@ -30,15 +30,13 @@ public class BookingController {
 
     //BOOKING CONTROLLER
     @PostMapping(value="/bookings",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public ResponseEntity newBooking(@RequestBody BookingDTO bookingDTO) throws TheatreDetailsNotFoundException, CustomerDetailsNotFoundException, BookingFailedException {
+    public ResponseEntity newBooking(@RequestBody BookingDTO bookingDTO) throws APIException , TheatreDetailsNotFoundException, CustomerDetailsNotFoundException, BookingFailedException {
         ResponseEntity responseEntity = null;
         try {
             bookingValidator.validateBooking(bookingDTO);
             Booking responseBooking = bookingService.acceptBookingDetails(bookingDTO);
             responseEntity = ResponseEntity.ok(responseBooking);
         } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (APIException e) {
             e.printStackTrace();
         }
         return responseEntity;

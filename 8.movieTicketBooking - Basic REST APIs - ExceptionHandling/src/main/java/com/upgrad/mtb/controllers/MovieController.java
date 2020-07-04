@@ -92,7 +92,7 @@ public class MovieController {
     }
 
     @GetMapping(value="/movies",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public ResponseEntity getAllMovies(@RequestParam(defaultValue = "-1") int number) throws APIException {
+        public ResponseEntity getAllMovies(@RequestParam(defaultValue = "-1") int number) throws APIException {
         if(number>0){
                 logger.debug("Limited number of movies to be returned :" + number);
                 List<Movie> movies = movieService.getAllMoviesDetails();

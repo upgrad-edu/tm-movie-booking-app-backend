@@ -1,4 +1,4 @@
-package com.upgrad.mtb.config.config;
+package com.upgrad.mtb.config;
 
 
 import com.upgrad.mtb.security.jwt.JwtConfigurer;
