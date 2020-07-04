@@ -126,13 +126,12 @@ public class AuthController {
     @ResponseBody
     public ResponseEntity signUp(@RequestBody CustomerDTO data) throws CustomException {
         try {
-
+            customerValidator.validateCustomer(data);
             Map<String, String> model = new HashMap<>();
-            //TODO Validation on the SignUpRequest
             String username = data.getUsername();
             String password = data.getPassword();
             if(StringUtils.isEmpty(username) ||  StringUtils.isEmpty(password)){
-                model.put("Error", "User id is invalid/ Password is empty");
+                model.put("Error", "Username is invalid/ Password is empty");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(model);
             }
             String refreshToken = jwtTokenProvider.createRefreshToken(username);
@@ -141,7 +140,11 @@ public class AuthController {
             model.put("refresh_token", refreshToken);*/
            data.setJwtToken(token);
            data.setRefreshToken(refreshToken);
-           Customer savedCustomer = customerService.acceptCustomerDetails(data);
+            Customer savedCustomer = customerService.acceptCustomerDetails(data);
+            customerService.addToken(token);
+            customerService.addRefreshToken(token,savedCustomer);
+            customerService.updateRefreshTokenAccessTokenMap(refreshToken,token);
+            customerService.updateAccessTokenUserMap("",token,savedCustomer);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedCustomer);
         } catch (Exception e) {
             throw new CustomException("Username " + data.getUsername() + " already registered", HttpStatus.UNPROCESSABLE_ENTITY);

@@ -4,36 +4,42 @@ import com.upgrad.mtb.beans.Booking;
 import com.upgrad.mtb.beans.Customer;
 import com.upgrad.mtb.dto.CustomerDTO;
 import com.upgrad.mtb.exceptions.*;
+import com.upgrad.mtb.security.jwt.JwtTokenProvider;
 import com.upgrad.mtb.services.BookingService;
 import com.upgrad.mtb.services.CustomerService;
+import com.upgrad.mtb.services.CustomerServiceImpl;
 import com.upgrad.mtb.validator.CustomerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CustomersController {
     @Autowired
-    CustomerService customerService;
+    CustomerServiceImpl customerService;
 
     @Autowired
     BookingService bookingService;
-
     @Autowired
     CustomerValidator customerValidator;
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
     
     @RequestMapping(value= {"/sayHelloCustomer"},method= RequestMethod.GET)
     public ResponseEntity<String> sayHello(){
         return new ResponseEntity<String>("Hello World To All From CustomerController", HttpStatus.OK);
     }
 
-    //CUSTOMER CONTROLLER
+    /*//CUSTOMER CONTROLLER
     @PostMapping(value="/customers",consumes= MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
     public ResponseEntity newCustomer(@RequestBody CustomerDTO customerDTO) throws APIException , CustomerUserNameExistsException, UserTypeDetailsNotFoundException {
         ResponseEntity responseEntity = null;
@@ -41,24 +47,34 @@ public class CustomersController {
             Customer responseCustomer = customerService.acceptCustomerDetails(customerDTO);
             responseEntity = ResponseEntity.ok(responseCustomer);
             return responseEntity;
-    }
+    }*/
+
 
     @GetMapping("/customers/{id}")
     @ResponseBody
-    public ResponseEntity getCustomerDetails(@PathVariable(name = "id") int id) throws CustomerDetailsNotFoundException {
+    public ResponseEntity getCustomerDetails(@PathVariable(name = "id") int id , @RequestHeader(value = "X-Access-Token") String accessToken) throws CustomerDetailsNotFoundException {
+        Customer savedCustomer = customerService.getUserFromAccessToken(accessToken.trim());
+        if(savedCustomer == null)
+            throw new CustomerDetailsNotFoundException("Customer details not found");
         System.out.println(customerService.getCustomerDetails(id).toString());
         Customer customer =  customerService.getCustomerDetails(id);
         return ResponseEntity.ok(customer);
     }
 
     @PutMapping("/customers/{id}")
-    public ResponseEntity updateCustomerDetails(@PathVariable(name = "id") int id , @RequestBody CustomerDTO customerDTO) throws CustomerDetailsNotFoundException, UserTypeDetailsNotFoundException {
+    public ResponseEntity updateCustomerDetails(@PathVariable(name = "id") int id , @RequestBody CustomerDTO customerDTO , @RequestHeader(value = "X-Access-Token") String accessToken) throws CustomerDetailsNotFoundException, UserTypeDetailsNotFoundException {
+        Customer savedCustomer = customerService.getUserFromAccessToken(accessToken.trim());
+        if(savedCustomer == null)
+            throw new CustomerDetailsNotFoundException("Customer details not found");
         Customer updatedCustomer =  customerService.updateCustomerDetails(id, customerDTO);
         return ResponseEntity.ok(updatedCustomer);
     }
 
     @GetMapping(value="/customers",produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-    public ResponseEntity findAllCustomers() {
+    public ResponseEntity findAllCustomers( @RequestHeader(value = "X-Access-Token") String accessToken) throws CustomerDetailsNotFoundException {
+        Customer savedCustomer = customerService.getUserFromAccessToken(accessToken.trim());
+        if(savedCustomer == null)
+            throw new CustomerDetailsNotFoundException("Customer details not found");
         List<Customer> customers = customerService.getAllCustomerDetails();
         System.out.println("Number of customers :" + customers.size());
         return ResponseEntity.ok(customers);
