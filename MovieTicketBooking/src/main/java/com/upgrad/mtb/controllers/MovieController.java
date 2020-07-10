@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 public class MovieController {
     @Autowired

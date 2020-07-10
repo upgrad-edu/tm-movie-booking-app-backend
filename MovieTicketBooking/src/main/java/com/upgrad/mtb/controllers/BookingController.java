@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.util.List;
-
+@CrossOrigin
 @Controller
 public class BookingController {
     @Autowired
