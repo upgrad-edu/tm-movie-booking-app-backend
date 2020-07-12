@@ -20,14 +20,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-@CrossOrigin
-@Controller
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@RestController
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -43,7 +42,7 @@ public class AuthController {
     DTOEntityConverter dtoEntityConverter;
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "/users")
+    @RequestMapping(method = RequestMethod.POST, value = "/customers")
     @ResponseBody
     public ResponseEntity signUp(@RequestBody CustomerDTO customerDTO) throws CustomException {
         try {

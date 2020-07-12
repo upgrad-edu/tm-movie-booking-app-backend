@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/access-tokens")
         .permitAll()
-        .antMatchers("/users")
+        .antMatchers("/customers")
         .permitAll()
         .antMatchers("/access-tokens/refresh")
         .permitAll()
